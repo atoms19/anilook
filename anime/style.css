@@ -1,0 +1,93 @@
+body{
+  transition: background 0.2s;
+  scroll-behavior:smooth;
+}
+body.darkmode{
+  background:var(--dark);
+  --violet:#6E39CB;
+  color:white;
+ 
+}
+body.darkmode .card{
+  background:#444;
+  color:white;
+}
+body.darkmode .list{
+  background:#444;
+  color:white;
+}
+
+.img{
+  width:100%;
+  max-height:80vh;
+}
+.loader{
+  width:100px!important;
+}
+.loader span{
+  width:20px !important;
+  height:20px!important;
+}
+.video-player{
+  width:100%;
+  margin-top:1rem;
+}
+.anime-card{
+  perspective:1000px;
+  transition:0.32s;
+}
+.anime-card:active{
+ transform:scale(1.1);
+  
+}
+.flex-btw{
+  justify-content: space-between;
+}
+
+
+.anime-card img{
+  max-height:20rem;
+  width:100%;
+}
+#watch-episodes{
+  display:flex;
+  flex-wrap:wrap;
+  max-height:30rem;
+  overflow-y:scroll;
+}
+.opacity{
+  opacity:0.73;
+}
+.anime-tag{
+  margin:0.1rem;
+  background:var(--violet);
+   opacity:0.73;
+   font-family:'Roboto',sans-serif;
+  color:#fff;
+}
+#searchbox{
+  align-items:center;
+}
+#searchbox .btn{
+  height:100%;
+  
+  
+}
+#loader{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,0.92);
+  
+}
+#loader.hide{
+  display:none;
+}
+.loader span{
+  background:var(--violet);
+}
