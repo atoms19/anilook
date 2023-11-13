@@ -71,6 +71,8 @@ function loadAnimeDetails(id){
     elem('#details-othername').innerText='also known as : '+data.otherName
     
     //loading episodes 
+    qualityOption=0
+    
     elem('#watch-episodes').innerHTML=''
     data.episodes.forEach((episode)=>{
     ep=document.createElement('button')
@@ -79,7 +81,7 @@ function loadAnimeDetails(id){
     ep.classList.add('opacity')
     ep.innerText=episode.number
     ep.addEventListener('click',()=>{
-      watchAnime(episode.id)
+      watchAnime(episode.id,qualityOption)
     })
     elem('#watch-episodes').appendChild(ep)
     })
@@ -101,7 +103,10 @@ function navigateToDetails(){
     elem('#watch').classList.add('hide')
     elem('#watch-screen').pause()
 }
-function watchAnime(id){
+
+
+
+function watchAnime(id,srcno=0){
   elem('#loader').classList.remove('hide')
 elem('#details').classList.add('hide')
     elem('#watch').classList.remove('hide')
@@ -110,9 +115,26 @@ elem('#details').classList.add('hide')
     return r.json()
   }).then((data)=>{
     
-    elem('#watch-screen').setAttribute('src',data.sources[0].url)
+    elem('#watch-screen').setAttribute('src',data.sources[srcno].url)
     elem("#watch-screen").addEventListener('loadstart',()=>{
       elem('#loader').classList.add('hide')
+    })
+    elem('#watch-quality').innerHTML=''
+    elem('#watch-qualityName').innerText='current quality:'+data.sources[srcno].quality
+    data.sources.forEach((source,index)=>{
+      qualityBtn=document.createElement('button')
+      qualityBtn.classList.add('btn')
+      qualityBtn.classList.add('qbtn')
+      qualityBtn.innerText=source.quality
+      elem('#watch-quality').appendChild(qualityBtn)
+      
+      qualityBtn.addEventListener('click',()=>{
+        watchAnime(id,index)
+        qualityOption=index
+        
+      })
+      
+      
     })
   })
     
@@ -195,4 +217,4 @@ function tgdarkmode(){
 }
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     tgdarkmode()
-    }
+}
