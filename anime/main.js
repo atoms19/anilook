@@ -79,6 +79,7 @@ function loadAnimeDetails(id,from='home'){
         elem('#search-form').classList.remove('hide')
       }else if(from=='search'){
         elem('#results').classList.remove('hide')
+        
       }
     })
     
@@ -146,8 +147,9 @@ function navigateToDetails(){
 }
 function navigateToHome(){
   elem('#results').classList.add('hide')
-  elem('#home').classList.remove('hide')
-  elem("#search-form").classList.remove('hide')
+  elem('#home').classList.remove('hide'
+  )
+  
 }
 
 //anime streaming links
@@ -212,9 +214,10 @@ searchpgcount=2
 //search function
 function searchAnime(aname,pg=1){
   //shitty code-writing html from js for the bavk button and result title
-elem('#results-container').innerHTML=`<button class="btn violet" onclick="navigateToHome()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+elem('#results-container').innerHTML=`  <button class="btn violet" onclick="navigateToHome()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg></button>
+    
 <h2 class='font-2' >results: ${aname}</h2>`
 
 fetch(url+aname+'?page='+pg).then((r)=>{
@@ -272,14 +275,14 @@ function createAnimeTile(anime,location, position)
 }
 
 
-function loadHome(pageno=1){
+function loadHome(pageno=1, location='#top-airing',slides=true){
   fetch(url+'top-airing?page='+pageno).then((r)=>{
   return r.json()
 }).then((data)=>{
   data.results.forEach((anime,index)=>{
-    createAnimeTile(anime,'#top-airing',index+1)
+    createAnimeTile(anime,location,index+1)
     //the code below is disgusting (its for the slides)
-    
+    if(slides){
     swh=document.createElement('div')
     swh.classList.add('swiper-slide')
     sw=document.createElement('div')
@@ -312,7 +315,9 @@ function loadHome(pageno=1){
     swh.appendChild(sw)
     elem('.swiper-wrapper').appendChild(swh)
     
-  })
+  }
+  
+}  )
 
 })
 }
@@ -339,6 +344,7 @@ function tgdarkmode(el){
     
   }}
 }
+loadHome(2,'#popular-airing',false)
 
 //automatically setting darkmode if system in darkmode
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
