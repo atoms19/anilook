@@ -11,6 +11,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
   <title>Gojo tv</title>
   <link rel="stylesheet" href="style.css">
@@ -49,7 +55,11 @@
   <nav class='nav violet'>
     <div class="nav-logo font-2">gojo</div>
   <ul class="hide-till-md">
-       <li onclick="tgdarkmode(this)">theme</li>
+       <li id="darkmodet" onclick="tgdarkmode(this)">
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun-fill" viewBox="0 0 16 16">
+  <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+</svg>
+       </li>
        <li onclick="window.scrollTo(0, 0)">home</li>
        <li>web novels</li>
        <li>aniquotes</li>
@@ -61,18 +71,44 @@
   
   <div class="sidenav topnav violet">
   <ul>
-       <li class="" onclick="tgdarkmode(this)">theme</li>
+       <li class="" id="darkmodet2"onclick="tgdarkmode(this)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun-fill" viewBox="0 0 16 16">
+  <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+</svg></li>
        <li onclick="window.scrollTo(0, 0)">home</li>
        <li>web novels</li>
        <li>aniquotes</li>
       
     </ul>
 </div>
+<div id="search-form" class="wrap pack">
+<div id="searchbox"class="flex"><input class="inp flat" id="search-inp" placeholder="search an anime" type="text"><button class="violet btn" id="search-btn" type="submit">search</button></div>
+</div>
+<section id="home" class="">
+   
+  <div class="swiper">
+    <div class="swiper-wrapper">
+    <!--  anime slides appear here-->
+   
+
+  </div>
+  <div class="swiper-pagination"></div></div>
+ 
+ <div class="pack wrap-min">
+<h3 class="font-2 margin-0">TOP AIRING</h3>
+
+<div id="top-airing" class="anime-tile-container">
+  
+  
+  
+</div>
+</div>
+</section>
+
   
  <!--home page os displayed inside the results-containwr using javascript-->
-   <section id="results" class="pack wrap">
+   <section id="results" class="pack ">
      
-     <div id="searchbox"class="flex"><input class="inp flat" id="search-inp" placeholder="search an anime" type="text"><button class="violet btn" id="search-btn">search</button></div>
+    
      
          <!--search results are added to this container-->
      <div id="results-container">
@@ -84,7 +120,7 @@
    <!--details about an anime-->
    <section id="details" class="hide pack wrap">
      
-     <button id="back" class="violet btn" onclick="navigateToResults()">
+     <button id="details-back" class="violet btn">
        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg>
@@ -114,7 +150,7 @@
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg>
         </button>
-        <button class="btn violet">servers</button>
+        <button class="btn violet" onclick="nextEp()">next ep</button>
         </div>
         
        <video id="watch-screen" class="video-player" controls></video>
