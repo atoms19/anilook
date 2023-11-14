@@ -4,104 +4,109 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--ilus for styling axios for api-->
+  <!--ilus for styling-->
    <link href="https://cdn.jsdelivr.net/gh/atoms19/ILUS.CSS/dist/ILUS5.min.css" rel="stylesheet">
-   
+   <!--meta tags and favicon-->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
 
-  <title>aniGojo</title>
+  <title>Gojo tv</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="bright center">
-  <div class="wrapped">
-  <section class="bg-img pack intro" style="">
+  
+  
+  <!--landing page-->
+  <section class="pack intro">
     <h1 class="font-jumbo font-2">Gojo</h1>
-    <h4 class="font-2">safe|add free|anime</h4>
+    <h4 class="font-2">safe|ads free|anime</h4>
     <image width=220rem height=200rem class="" src='./anilooklogo.png'></image>
-    <p class="text-grey rounded">a simple web application to watch anime online with ease, without worrying about getting redirected to spooky sites,and not getting spammed by ads on your face</p>
+    <p class="text-grey rounded">a simple web application to watch anime online with ease, say goodbye to getting redirected to spooky sites,ads and trackers </p>
+    
     <button onclick="elem('.app').classList.remove('hide');elem('.intro').classList.add('hide')" class="btn block violet">start exploring</button>
+    
     <h4>why use gojo over others?</h4>
     <ul class="list">
-      <li>simple interface lets you watch the latest anime with ease no ads all for free</li>
+      <li>simple interface lets you watch the latest anime with ease no ads, all for free</li>
       <li>we dont keep your user data we don't even have a sign in</li>
       <li>extensive anime library from gogoanime, ranging from retro animes all the way to latest animes</li>
-      
+      <li>no cookies collected</li>
     </ul>
     <note warn>
       we dont store anime on any of our servers its all from third party websites mainly gogoanime 
     </note>
+    
     <footer class="center">
       <hr>
       built with 💥 by atoms19
     </footer>
   </section>
+  
+  <!--application-->
   <section class="app hide">
   <nav class='nav violet'>
     <div class="nav-logo font-2">gojo</div>
   <ul class="hide-till-md">
-       <li onclick="tgdarkmode()">theme</li>
-       <li onclick="window.scrollTo(0, 0)">scroll up</li>
+       <li onclick="tgdarkmode(this)">theme</li>
+       <li onclick="window.scrollTo(0, 0)">home</li>
        <li>web novels</li>
        <li>aniquotes</li>
-      
     </ul>
     <div class="nav-menu hide-from-md" onclick="openMenu()">
         <span class="burger-menu"></span>
     </div>
-    
   </nav>
   
   <div class="sidenav topnav violet">
   <ul>
-       <li class="" onclick="tgdarkmode()">theme</li>
-       <li onclick="window.scrollTo(0, 0)">scroll up</li>
+       <li class="" onclick="tgdarkmode(this)">theme</li>
+       <li onclick="window.scrollTo(0, 0)">home</li>
        <li>web novels</li>
-       <li>waifu loader</li>
+       <li>aniquotes</li>
       
     </ul>
 </div>
   
- 
+ <!--home page os displayed inside the results-containwr using javascript-->
    <section id="results" class="pack wrap">
-     
-
      
      <div id="searchbox"class="flex"><input class="inp flat" id="search-inp" placeholder="search an anime" type="text"><button class="violet btn" id="search-btn">search</button></div>
      
-         
-     
-     
+         <!--search results are added to this container-->
      <div id="results-container">
 
        
      </div>
-     </div>
-  
    </section>
+   
+   <!--details about an anime-->
    <section id="details" class="hide pack wrap">
+     
      <button id="back" class="violet btn" onclick="navigateToResults()">
        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg>
      </button>
+     <div id="details-container"class="flex w-full center">
      <img id="details-img" src="" class="img" alt="">
+    </div>
      <h1 class="font-2" id="details-title"></h1>
      <button id="watch-btn" class="btn block violet">watch</button>
-     <p id="details-info"></p>
+     <div id="info-container"><p id="details-info"></p></div>
      <ul class="list">
        <li id="details-episodes">no of episodes: </li>
        <li id="details-status">status: </li>
        <li id="details-type"></li>
        <li id="details-sub">sub or dub : </li>
+       <li id="details-genre"></li>
        <li id="details-othername"></li>
      </ul>
-     
-     
+    
    </section>
   
+  <!--watching section-->
      <section id="watch" class=" wrap hide">
        <div class="flex flex-btw">
         <button id="back-2" class="violet btn" onclick="navigateToDetails()">
@@ -110,15 +115,14 @@
 </svg>
         </button>
         <button class="btn violet">servers</button>
-        
         </div>
+        
        <video id="watch-screen" class="video-player" controls></video>
        <div class="pack">
        <h2 id="watch-title" class="font-2"></h2>
+       <!--episodes loded here-->
        <div class="btn-grp" id="watch-episodes">
          </div>
-         
-       
        <h4>watch quality</h4>
        <p class="text-light" id="watch-qualityName"></p>
        <div id="watch-quality">
@@ -126,7 +130,7 @@
        </div>
        </div>
      </section>
-  </div>
+  <!--loading screen-->
   <section id="loader" class="hide auto">
     <div class="loader">
       <span></span>
@@ -134,7 +138,7 @@
       <span></span>
     </div>
   </section>
-  </section>
+ </section>
 
   <script src="main.js"></script>
 </body>
