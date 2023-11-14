@@ -147,6 +147,7 @@ function navigateToDetails(){
 function navigateToHome(){
   elem('#results').classList.add('hide')
   elem('#home').classList.remove('hide')
+  elem("#search-form").classList.remove('hide')
 }
 
 //anime streaming links
