@@ -62,7 +62,7 @@
        </li>
        <li onclick="window.scrollTo(0, 0)">home</li>
        <li>web novels</li>
-       <li>aniquotes</li>
+       <li onclick="localStorage.setItem('saves',JSON.stringify({}))">clear data</li>
     </ul>
     <div class="nav-menu hide-from-md" onclick="openMenu()">
         <span class="burger-menu"></span>
@@ -76,7 +76,7 @@
 </svg></li>
        <li onclick="window.scrollTo(0, 0)">home</li>
        <li>web novels</li>
-       <li>aniquotes</li>
+         <li onclick="localStorage.setItem('saves',JSON.stringify({}));alert('data cleared');loadSaves()">clear data</li>
       
     </ul>
 </div>
@@ -220,4 +220,4 @@
 
   <script src="main.js"></script>
 </body>
-         </html>
+</html>
