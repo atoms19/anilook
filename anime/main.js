@@ -20,8 +20,65 @@ fetch('https://animechan.xyz/api/random')
 
 //anime provider
 const url = "https://anigojoapi.vercel.app/anime/gogoanime/"
+qualityOption=0
 
+animesChoosen={}
+//saving anime
+function saveAnime(id,ep){
+  animesChoosen[id]={ep:ep}
+  localStorage.setItem('saves',JSON.stringify(animesChoosen))
+}
 
+function loadSaves(){
+  elem('#continue-watching').innerHTML=''
+animesChoosen=JSON.parse(localStorage.getItem('saves'))||{}
+if(Object.keys(animesChoosen).length>20){
+  console.log('limit reached')
+  animesChoosen={}
+  localStorage.setItem('saves',JSON.stringify(animesChoosen))
+}
+if(Object.keys(animesChoosen).length==0){
+  elem('#continue').classList.add('hide')
+}else{
+elem('#continue').classList.remove('hide')
+}
+Object.keys(animesChoosen).forEach((id,index)=>{
+ fetch(url+'info/'+id).then((r)=>{
+   return r.json()
+ }).then((ani)=>{
+   tile=createAnimeTile(ani,'#continue-watching',0,true)
+   tile.addEventListener('click',()=>{
+     elem('#search-form').classList.add('hide')
+     
+     ani.episodes.forEach((episode,index)=>{
+    ep=document.createElement('button')
+    ep.classList.add('btn')
+    ep.classList.add('violet')
+    ep.classList.add('opacity')
+    ep.innerText=episode.number
+    ep.addEventListener('click',()=>{
+      watchAnime(episode.id,qualityOption)
+      animesChoosen[id].ep=index
+      currentEp=index
+      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+      //changing current episode 
+      
+    })
+    
+    elem('#watch-episodes').appendChild(ep)
+    })
+     elem('#back-2').onclick=()=>{location.reload()}
+     currentEp=animesChoosen[id].ep
+     elem('#home').classList.add('hide')
+     watchAnime(ani.episodes[animesChoosen[id].ep].id,0)
+   })
+ })
+  
+ 
+})
+}
+
+loadSaves()
 //to create anime card
 function createAnimeCard(anime, location){
   acard=document.createElement('div')
@@ -81,6 +138,7 @@ function loadAnimeDetails(id,from='home'){
         elem('#results').classList.remove('hide')
         
       }
+      loadSaves()
     })
     
     
@@ -111,7 +169,11 @@ function loadAnimeDetails(id,from='home'){
     ep.innerText=episode.number
     ep.addEventListener('click',()=>{
       watchAnime(episode.id,qualityOption)
-      currentEp=index //changing current episode 
+      animesChoosen[id].ep=index
+      currentEp=index
+      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+      //changing current episode 
+      
     })
     
     elem('#watch-episodes').appendChild(ep)
@@ -122,6 +184,8 @@ function loadAnimeDetails(id,from='home'){
       
     watchAnime(data.episodes[0].id)
   currentEp=0
+  saveAnime(id,0)
+
     
   })
     elem('#loader').classList.add('hide') //loading finished
@@ -132,6 +196,10 @@ function loadAnimeDetails(id,from='home'){
  function nextEp(){
    try{
    elem('#watch-episodes').children[currentEp+1].click()
+   animesChoosen[id].ep=currentEp+1
+      
+      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+   
    }catch{
      console.log('last episode reached')
    }
@@ -170,10 +238,13 @@ elem('#details').classList.add('hide')
     return r.json()
   }).then((data)=>{
     
-    if(data.sources!=undefined){
+    
     elem('#watch-screen').setAttribute('src',data.sources[srcno].url)
     
-
+ //removing loader when video starts
+        elem("#watch-screen").addEventListener('loadstart', () => {
+          elem('#loader').classList.add('hide')
+        })
     //clearing watch quality option and setting it to current quality 
     elem('#watch-quality').innerHTML=''
     elem('#watch-qualityName').innerText='current quality:'+data.sources[srcno].quality
@@ -194,11 +265,10 @@ elem('#details').classList.add('hide')
       })
       
       
-    })}
-        //removing loader when video starts
-        elem("#watch-screen").addEventListener('loadstart', () => {
-          elem('#loader').classList.add('hide')
-        })
+    })
+       
+        
+        
   })
     
 }
@@ -262,24 +332,29 @@ fetch(url+aname+'?page='+pg).then((r)=>{
 
 
 pgCount=2
-function createAnimeTile(anime,location, position)
+function createAnimeTile(anime,location, position,notdefault=false)
 {
   tile=document.createElement('div')
   tile.classList.add('anime-tile')
   tile.classList.add('shadow')
   tile.classList.add('card')
+  if(position!=0){
   tile.setAttribute('pos', position)
+  }
   tile.style.background='url("'+anime.image+'")'
   elem(location).appendChild(tile)
+  if(!notdefault){
   tile.addEventListener('click',()=>{
     elem('#loader').classList.remove('hide')
     loadAnimeDetails(anime.id)
     elem('#home').classList.add('hide')
     elem('#search-form').classList.add('hide')
     
-  })
+  })}
+  return tile
 }
 
+//我必须吃屎才能做到这一点
 
 function loadHome(pageno=1, location='#top-airing',slides=true){
   fetch(url+'top-airing?page='+pageno).then((r)=>{
@@ -363,7 +438,7 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 const swiper = new Swiper('.swiper', {
   // Optional parameters
   direction: 'vertical',
-  loop:true,
+  
 
 
   // If we need pagination
