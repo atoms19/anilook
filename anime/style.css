@@ -196,6 +196,7 @@ display:flex;
   background-position:center center;
   margin-left:0.2rem;
   cursor:pointer;
+  position:relative;
 }
 .anime-tile::after{
   content:attr(pos);
@@ -206,6 +207,16 @@ display:flex;
   font-family:'Montserrat',sans-serif;
   font-size:0.8rem;
   
+  
+}
+.anime-tile span{
+  position:absolute;
+  font-family:'Montserrat',sans-serif;
+
+  color:white;
+  font-size:0.6rem;
+  bottom:2px;
+  padding:0.21rem;
 }
 .wrap-min{
   padding-top:1.5rem;
