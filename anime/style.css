@@ -119,12 +119,13 @@ body.darkmode .inp{
   height:25rem;
 }
 #details-container{
-  display:flex;
+  
+display:flex;
   align-items:center;
   justify-content: center;
 }
 #info-container{
- co
+ width:90%;
   display:flex;
   align-items:center;
   justify-content: center;
@@ -224,7 +225,12 @@ body.darkmode .inp{
   padding:0.75rem 0;
   
 }
+#info-list{
+  overflow-x:scroll;
+  width:90vw;
+}
 #info-list span{
   color:var(--colorsec)!important;
   padding:0.3rem 0 !important;
+ 
 }
