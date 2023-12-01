@@ -342,6 +342,9 @@ function createAnimeTile(anime,location, position,notdefault=false)
   tile.setAttribute('pos', position)
   }
   tile.style.background='url("'+anime.image+'")'
+  tilename=document.createElement('span')
+  tilename.innerText=anime.title
+  tile.appendChild(tilename)
   elem(location).appendChild(tile)
   if(!notdefault){
   tile.addEventListener('click',()=>{
