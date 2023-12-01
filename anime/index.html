@@ -53,7 +53,7 @@
   <!--application-->
   <section class="app hide">
   <nav class='nav violet'>
-    <div class="nav-logo font-2">gojo</div>
+    <div class="nav-logo font-2" onclick="location.reload()">gojo</div>
   <ul class="hide-till-md">
        <li id="darkmodet" onclick="tgdarkmode(this)">
          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun-fill" viewBox="0 0 16 16">
@@ -102,13 +102,31 @@
   
 </div>
 </div>
+<div class="pack wrap-min">
+<h3 class="font-2 margin-0">RECENTLY POPULAR</h3>
+
+<div id="popular-airing" class="anime-tile-container">
+  
+  
+  
+</div>
+</div>
+
+<div class="pack wrap-min hide">
+<h3 class="font-2 margin-0">CONTINUE WATCHING</h3>
+
+<div id="continue-watching" class="anime-tile-container">
+  
+  
+  
+</div>
+</div>
 </section>
 
   
  <!--home page os displayed inside the results-containwr using javascript-->
-   <section id="results" class="pack ">
-     
-    
+   <section id="results" class="hide pack ">
+   
      
          <!--search results are added to this container-->
      <div id="results-container">
@@ -131,13 +149,32 @@
      <h1 class="font-2" id="details-title"></h1>
      <button id="watch-btn" class="btn block violet">watch</button>
      <div id="info-container"><p id="details-info"></p></div>
-     <ul class="list">
-       <li id="details-episodes">no of episodes: </li>
-       <li id="details-status">status: </li>
-       <li id="details-type"></li>
-       <li id="details-sub">sub or dub : </li>
-       <li id="details-genre"></li>
-       <li id="details-othername"></li>
+     <ul class="list shadow" id="info-list">
+       <li>
+         <span>no of episodes :</span>
+       <div id="details-episodes"></div>
+       </li>
+         <li>
+         <span>status :</span>
+       <div id="details-status"></div>
+       </li>
+         <li>
+           <span>type :</span>
+           <div id="details-type"></div>
+         </li>
+         <li>
+           <span>language :</span>
+           <div id="details-sub"></div>
+         </li>
+         <li>
+           <span>genere :</span>
+           <div id="details-genre"></div>
+         </li>
+         <li>
+           <span>also known as :</span>
+           <div id="details-othername"></div>
+         </li>
+       
      </ul>
     
    </section>
