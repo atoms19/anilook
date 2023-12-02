@@ -18,6 +18,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+
+
+
+
   <title>Gojo tv</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -124,7 +128,7 @@
 </div>
 
 <div class="pack wrap-min">
-<h3 class="font-2 margin-0">GOATED</h3>
+<h3 class="font-2 margin-0">CLASSICS</h3>
 
 <div id="goated" class="anime-tile-container">
   
@@ -205,7 +209,9 @@
         <button class="btn violet" onclick="nextEp()">next ep</button>
         </div>
         
-       <video id="watch-screen" class="video-player" controls></video>
+       <video id="watch-screen" class="video-player" controls>
+         <source type="application/x-mpegURL" id="watch-data"></source>
+       </video>
        <div class="pack">
        <h2 id="watch-title" class="font-2"></h2>
        <!--episodes loded here-->
@@ -227,6 +233,7 @@
     </div>
   </section>
  </section>
+ 
 
   <script src="main.js"></script>
 </body>
