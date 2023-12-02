@@ -30,7 +30,8 @@ function saveAnime(id,ep){
 }
 
 function loadSaves(){
-  elem('#continue-watching').innerHTML=''
+ elem("#continue-watching").innerHTML=''
+animesChoosen={}
 animesChoosen=JSON.parse(localStorage.getItem('saves'))||{}
 if(Object.keys(animesChoosen).length>20){
   console.log('limit reached')
@@ -135,10 +136,11 @@ function loadAnimeDetails(id,from='home'){
         elem('#home').classList.remove('hide')
         elem('#search-form').classList.remove('hide')
       }else if(from=='search'){
+        elem('#home').classList.add('hide')
         elem('#results').classList.remove('hide')
-        
+        elem('#search-form').classList.remove('hide')
       }
-      loadSaves()
+      
     })
     
     
@@ -428,8 +430,22 @@ function tgdarkmode(el){
     
   }}
 }
-loadHome(2,'#popular-airing',false)
 
+
+function loadSpecific(collection,location){
+  for (i of collection){
+  fetch(url+'info/'+i).then((r)=>{
+   return r.json()
+ }).then((ani)=>{
+   tile=createAnimeTile(ani,location,0)
+ })
+
+}}
+
+best=['one-piece','bleach','naruto','dragon-ball-z','shingeki-no-kyojin','hunter-x-hunter','doraemon-1979','pokemon','death-note','fullmetal-alchemist-brotherhood','jojos-bizarre-adventure','kimetsu-no-yaiba']
+
+loadHome(2,'#popular-airing',false)
+loadSpecific(best,'#goated')
 //automatically setting darkmode if system in darkmode
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     tgdarkmode(elem("#darkmodet2"))
