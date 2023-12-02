@@ -241,7 +241,9 @@ elem('#details').classList.add('hide')
   }).then((data)=>{
     
     
+    elem('#watch-data').setAttribute('src',data.sources[srcno].url)
     elem('#watch-screen').setAttribute('src',data.sources[srcno].url)
+    
     
  //removing loader when video starts
         elem("#watch-screen").addEventListener('loadstart', () => {
