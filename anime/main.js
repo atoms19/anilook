@@ -240,11 +240,20 @@ elem('#details').classList.add('hide')
     return r.json()
   }).then((data)=>{
     
+    if(Hls.isSupported()){
+      hls=new Hls()
+      hls.loadSource(data.sources[srcno].url)
+      hls.attachMedia(elem('#watch-screen'))
+      console.log('hls supported')
+    }else if(Hls.canPlayType('applications/apple.vnd.mpegurl')){
+    
     
     elem('#watch-data').setAttribute('src',data.sources[srcno].url)
     elem('#watch-screen').setAttribute('src',data.sources[srcno].url)
     
-    
+    }else{
+      alert('your browser doesnt support gojo')
+    }
  //removing loader when video starts
         elem("#watch-screen").addEventListener('loadstart', () => {
           elem('#loader').classList.add('hide')
@@ -444,7 +453,7 @@ function loadSpecific(collection,location){
 
 }}
 
-best=['one-piece','bleach','naruto','dragon-ball-z','shingeki-no-kyojin','hunter-x-hunter','doraemon-1979','pokemon','death-note','fullmetal-alchemist-brotherhood','jojos-bizarre-adventure','kimetsu-no-yaiba']
+best=['one-piece','bleach','naruto','dragon-ball-z','shingeki-no-kyojin','hunter-x-hunter','doraemon-1979','pokemon','death-note','fullmetal-alchemist-brotherhood','jojos-bizarre-adventure','sword-art-online','kimetsu-no-yaiba','kimi-no-na-wa','tokyo-ghoul']
 
 loadHome(2,'#popular-airing',false)
 loadSpecific(best,'#goated')
