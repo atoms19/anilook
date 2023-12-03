@@ -287,6 +287,7 @@ elem('#details').classList.add('hide')
 }
 
 //search box functionality
+
 elem('#search-btn').addEventListener('click',()=>{
   searchval=elem('#search-inp').value
   if(searchval!=''){
@@ -297,19 +298,33 @@ elem('#search-btn').addEventListener('click',()=>{
     elem('#results').classList.remove('hide')
   }
 })
+elem('#searchbox').addEventListener('keypress',(e)=>{
+  if(e.key=='Enter'){
+    e.preventDefault()
+    elem('#search-btn').click()
+  }
+})
 
 
 searchpgcount=2
 //search function
-function searchAnime(aname,pg=1){
+function searchAnime(aname,pg=1,isGenre=false){
+  results='results'
+  if(isGenre){
+    results='genre'
+  }
   //shitty code-writing html from js for the bavk button and result title
 elem('#results-container').innerHTML=`  <button class="btn violet" onclick="navigateToHome()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg></button>
     
-<h2 class='font-2' >results: ${aname}</h2>`
+<h2 class='font-2' >${results}: ${aname}</h2>`
+genreIndicator=''
+if(isGenre){
+  genreIndicator='genre/'
+}
 
-fetch(url+aname+'?page='+pg).then((r)=>{
+fetch(url+genreIndicator+aname+'?page='+pg).then((r)=>{
   return r.json()
 }).then((data)=>{
  
@@ -334,7 +349,11 @@ fetch(url+aname+'?page='+pg).then((r)=>{
     nextBtn.innerText='next'
     elem('#results-container').appendChild(nextdiv)
     nextBtn.addEventListener('click',()=>{
+      if(isGenre){
+        searchAnime(aname,searchpgcount,true)
+      }else{
       searchAnime(aname,searchpgcount)
+      }
       searchpgcount++
       nextBtn.remove()
     })
@@ -343,8 +362,19 @@ fetch(url+aname+'?page='+pg).then((r)=>{
 })
 }
 
+function loadGenre(t){
+  searchAnime(t,1,true)
+  elem('#home').classList.add('hide')
+    elem('#results').classList.remove('hide')
+}
+
 
 pgCount=2
+
+
+
+
+
 function createAnimeTile(anime,location, position,notdefault=false)
 {
   tile=document.createElement('div')
