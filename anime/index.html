@@ -66,7 +66,7 @@
        </li>
        <li onclick="window.scrollTo(0, 0)">home</li>
        <li onclick="alert('under construction,will be ready by aug 2024')">manga</li>
-       <li onclick="localStorage.setItem('saves',JSON.stringify({}))">clear data</li>
+       <li onclick="localStorage.setItem('saves',JSON.stringify({}));loadSaves()">clear data</li>
     </ul>
     <div class="nav-menu hide-from-md" onclick="openMenu()">
         <span class="burger-menu"></span>
@@ -85,7 +85,7 @@
     </ul>
 </div>
 <div id="search-form" class="wrap pack">
-<div id="searchbox"class="flex"><input class="inp flat" id="search-inp" placeholder="search an anime" type="text"><button class="violet btn" id="search-btn" type="submit">search</button></div>
+<div id="searchbox" class="flex"><input class="inp flat" id="search-inp" placeholder="search an anime" type="text"><button class="violet btn" id="search-btn" type="submit">search</button></div>
 </div>
 <section id="home" class="">
    
@@ -127,6 +127,36 @@
 </div>
 </div>
 
+
+
+<div class="pack wrap-min">
+<h3 class="font-2 margin-0">DISCOVER</h3>
+
+<div id="genres" class="genre-tile-container">
+  
+  <div class="genre-tile shadow rose rounded" onclick="loadGenre('romance')">romance</div>
+    <div class="genre-tile shadow steel rounded" onclick="loadGenre('action')">action</div>
+         <div class="genre-tile shadow salmon rounded" onclick="loadGenre('shounen')">shounen<small>full action</small></div>
+ <div class="genre-tile shadow blue rounded" onclick="loadGenre('fantasy')">fantasy</div>
+      <div class="genre-tile shadow amber rounded" onclick="loadGenre('slice-of-life')">wholesome</div>
+  <div class="genre-tile shadow apple rounded" onclick="loadGenre('ecchi')">ecchi<small><br>sus cam angles</small></div>
+   <div class="genre-tile shadow pink rounded" onclick="loadGenre('shoujo')">shoujo
+   <small>lovey dovey bfs</small></div>
+    <div class="genre-tile shadow purple rounded" onclick="loadGenre('harem')">harem<br><small>lots of girls</small></div>
+    
+     <div class="genre-tile shadow indigo rounded" onclick="loadGenre('sports')">sports</div>
+          <div class="genre-tile shadow blue rounded" onclick="loadGenre('mecha')">mecha<small>robots</small></div>
+               <div class="genre-tile shadow wood rounded" onclick="loadGenre('mystery')">mystery</div>
+                    <div class="genre-tile shadow dark rounded" onclick="loadGenre('horror')">horror</div>
+                    
+                          <div class="genre-tile shadow maroon rounded" onclick="loadGenre('historical')">historical</div>
+                           <div class="genre-tile shadow grey rounded" onclick="loadGenre('seinen')">seinen<small>4mature men</small></div>
+                     <div class="genre-tile shadow light  rounded" onclick="loadGenre('josei')">josei<small>4mature women</small></div>  
+                      <div class="genre-tile shadow teal  rounded" onclick="loadGenre('school')">school</div>
+                           <div class="genre-tile shadow olive rounded" onclick="loadGenre('isekai')">isekai<small>another world</small></div>
+                      
+</div>
+</div>
 <div class="pack wrap-min">
 <h3 class="font-2 margin-0">ALL TIME POPULAR</h3>
 
@@ -137,7 +167,11 @@
 </div>
 </div>
 
-
+<small class="pack center text-light">
+  
+  <br>
+© 2023 all rights reserved gojotv,anilook project
+</small>
 </section>
 
   
