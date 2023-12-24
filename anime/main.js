@@ -8,10 +8,10 @@ function elem(qry){
 function openMenu(){
         elem(".sidenav").classList.toggle("active")
     elem(".nav-menu").classList.toggle("active")
-  
+
     }
 
-/*some random api
+/*s RIP wifu viewer you'll be remembered 🥀💐
 
 fetch('https://animechan.xyz/api/random')
     .then(response => response.json())
@@ -19,7 +19,17 @@ fetch('https://animechan.xyz/api/random')
     //https://api.consumet.org/anime/
 
 //anime provider
-const url = "https://anigojoapi.vercel.app/anime/gogoanime/"
+
+let burl='https://anigojoapi.vercel.app/anime/gogoanime/'
+let murl= "https://anigojoapi.vercel.app/meta/anilist/"
+
+const old = new URLSearchParams(location.search).get('old');
+if(old){
+  url=burl
+}else{
+  url=murl
+}
+
 qualityOption=0
 
 animesChoosen={}
@@ -33,7 +43,7 @@ function loadSaves(){
  elem("#continue-watching").innerHTML=''
 animesChoosen={}
 animesChoosen=JSON.parse(localStorage.getItem('saves'))||{}
-if(Object.keys(animesChoosen).length>20){
+if(Object.keys(animesChoosen).length>7){
   console.log('limit reached')
   animesChoosen={}
   localStorage.setItem('saves',JSON.stringify(animesChoosen))
@@ -50,7 +60,10 @@ Object.keys(animesChoosen).forEach((id,index)=>{
    tile=createAnimeTile(ani,'#continue-watching',0,true)
    tile.addEventListener('click',()=>{
      elem('#search-form').classList.add('hide')
-     
+if(!old){
+      loadCharacters(ani.characters)
+    }
+
      ani.episodes.forEach((episode,index)=>{
     ep=document.createElement('button')
     ep.classList.add('btn')
@@ -63,7 +76,7 @@ Object.keys(animesChoosen).forEach((id,index)=>{
       currentEp=index
       localStorage.setItem('saves',JSON.stringify(animesChoosen))
       //changing current episode 
-      
+
     })
     
     elem('#watch-episodes').appendChild(ep)
@@ -74,8 +87,8 @@ Object.keys(animesChoosen).forEach((id,index)=>{
      watchAnime(ani.episodes[animesChoosen[id].ep].id,0)
    })
  })
-  
- 
+
+
 })
 }
 
@@ -91,8 +104,8 @@ function createAnimeCard(anime, location){
   acardbody.classList.add('card-content')
   atitle=document.createElement('h3')
   atitle.classList.add('font-2')
-  atitle.innerText=anime.title
-  
+  atitle.innerText=anime.title.english||anime.title.romaji||anime.title
+
   ageners=document.createElement('div')
   if(anime.genres){
   anime.genres.forEach((gener)=>{
@@ -105,12 +118,12 @@ function createAnimeCard(anime, location){
 }
   acardbody.appendChild(atitle)
   acardbody.appendChild(ageners)
-  
+
   acard.appendChild(aimg)
   acard.appendChild(acardbody)
-  
+
   elem(location).appendChild(acard)
-  
+
   //load anime details on click
   acard.addEventListener('click',()=>{
     elem('#loader').classList.remove('hide') //loading start
@@ -127,12 +140,12 @@ function loadAnimeDetails(id,from='home'){
     //hiding results screen
     elem('#results').classList.add('hide')
     elem('#details').classList.remove('hide')
-    
+
     //setting details back button
     elem('#details-back').addEventListener('click',()=>{
       elem('#details').classList.add('hide')
       if(from=='home'){
-        
+
         elem('#home').classList.remove('hide')
         elem('#search-form').classList.remove('hide')
       }else if(from=='search'){
@@ -140,28 +153,35 @@ function loadAnimeDetails(id,from='home'){
         elem('#results').classList.remove('hide')
         elem('#search-form').classList.remove('hide')
       }
-      
+
     })
-    
-    
+
+
    //loading anime details into elements 
     elem('#details-img').setAttribute('src',data.image)
-    elem('#details-title').innerText=data.title
-    elem('#details-info').innerText=data.description
+    elem('#details-title').innerText=data.title.english||data.title.romaji||data.title
+    if(data.description.length<250){
+    elem('#details-info').innerHTML=data.description
+    }else{
+      information=data.description
+      elem('#details-info').innerHTML=data.description.slice(0,250)+`<span class='text-violet pack' onclick='elem("#details-info").innerHTML=information'>read more</span>`
+      
+    }
     elem('#details-episodes').innerText=data.totalEpisodes
     elem('#details-sub').innerText=data.subOrDub
+    elem('#details-rating').innerText=(data.rating||'not available-')+'%'
     elem('#details-status').innerText=data.status
     elem('#details-type').innerText=data.type
     elem('#details-genre').innerText=data.genres
-    
-    elem('#details-othername').innerText=data.otherName
-    
-    
+
+    elem('#details-othername').innerText=data.otherName||data.synonyms
+
+
     qualityOption=0 //default quality 360p
-    
+
     //clearing episodes if any from previous call to be removed 
     elem('#watch-episodes').innerHTML=''
-    
+
     //loading episodes as buttons
     data.episodes.forEach((episode,index)=>{
     ep=document.createElement('button')
@@ -175,23 +195,54 @@ function loadAnimeDetails(id,from='home'){
       currentEp=index
       localStorage.setItem('saves',JSON.stringify(animesChoosen))
       //changing current episode 
-      
+
     })
-    
+
     elem('#watch-episodes').appendChild(ep)
     })
   //watch button loads the first episode by default 
   elem('#watch-btn').addEventListener('click',()=>{
-    
-      
+
+
     watchAnime(data.episodes[0].id)
   currentEp=0
   saveAnime(id,0)
 
-    
-  })
-    elem('#loader').classList.add('hide') //loading finished
 
+  })
+  
+  if(url==murl){
+  elem('#recommendations').innerHTML=''
+  data.recommendations.forEach(r=>{
+    
+    createAnimeTile(r,'#recommendations',0)
+  })
+  
+  
+elem('#related').innerHTML=''
+  data.relations.forEach(r=>{
+    
+    createAnimeTile(r,'#related',0)
+  })
+  enddate='now'
+  if(data.status!='Ongoing'){
+    enddate=data.startDate.year+'--'+data.endDate.day+'/'+data.endDate.month+'/'+data.endDate.year
+  }
+  elem('#details-release').innerText=data.startDate.day+'/'+data.startDate.month+'/'+enddate
+  }
+  loadCharacters(data.characters)
+  elem('#loader').classList.add('hide') //loading finished
+    
+    
+    
+
+  }).catch(err=>{
+    
+    document.write(`<link href="https://cdn.jsdelivr.net/gh/atoms19/ILUS.CSS/dist/ILUS5.min.css" rel="stylesheet">
+    <div class='pack hero'>
+    <h1 class='font-2'>error in loading</h1> this anime could not be loaded please visit the older site and check if it is available there <a href='https://gojotv.vercel.app?old=true' class='btn violet'>visit old gojo</a>
+    </div> ${err}`)
+   // elem('#loader').classList.add('hide') 
   })
 }
 //function to load next episode uses currentEp variable to keep track 
@@ -199,9 +250,9 @@ function loadAnimeDetails(id,from='home'){
    try{
    elem('#watch-episodes').children[currentEp+1].click()
    animesChoosen[id].ep=currentEp+1
-      
+
       localStorage.setItem('saves',JSON.stringify(animesChoosen))
-   
+
    }catch{
      console.log('last episode reached')
    }
@@ -219,38 +270,66 @@ function navigateToDetails(){
     elem('#watch-screen').pause() //pausing video if exited
 }
 function navigateToHome(){
-  
+
   elem('#results').classList.add('hide')
   elem('#home').classList.remove('hide'
   )
-  
+
+}
+function loadCharacters(charlist){
+  elem('#xray').innerHTML=''
+  charlist.forEach((c)=>{createChar(c)})
+}
+
+
+
+
+function createChar(c){
+ charcard=document.createElement('div')
+ charcard.classList=['character-tile']
+ cimg=document.createElement('img')
+ cimg.classList=['character-img']
+ cimg.src=c.image
+ charcard.appendChild(cimg)
+ cdiv=document.createElement('div')
+ ch=document.createElement('h3')
+ ch.classList=['character-name']
+ ch.innerText=c.name.full
+ cva=document.createElement('p')
+ cva.classList=['character-va']
+ cva.innerText=c.role
+ cdiv.appendChild(ch)
+ cdiv.appendChild(cva)
+ charcard.appendChild(cdiv)
+ 
+  elem('#xray').appendChild(charcard)
 }
 
 //anime streaming links
 
 function watchAnime(id,srcno=0){
-  
+
   elem('#loader').classList.remove('hide')
 elem('#details').classList.add('hide')
     elem('#watch').classList.remove('hide')
-    
+
  elem('#watch-title').innerText=id
- 
+
   fetch(url+'watch/'+id).then(r=>{
     return r.json()
   }).then((data)=>{
-    
+
     if(Hls.isSupported()){
       hls=new Hls()
       hls.loadSource(data.sources[srcno].url)
       hls.attachMedia(elem('#watch-screen'))
       console.log('hls supported')
     }else if(Hls.canPlayType('applications/apple.vnd.mpegurl')){
-    
-    
+
+
     elem('#watch-data').setAttribute('src',data.sources[srcno].url)
     elem('#watch-screen').setAttribute('src',data.sources[srcno].url)
-    
+
     }else{
       alert('your browser doesnt support gojo')
     }
@@ -261,7 +340,7 @@ elem('#details').classList.add('hide')
     //clearing watch quality option and setting it to current quality 
     elem('#watch-quality').innerHTML=''
     elem('#watch-qualityName').innerText='current quality:'+data.sources[srcno].quality
-    
+
     //loading quality options
     data.sources.forEach((source,index)=>{
       qualityBtn=document.createElement('button')
@@ -269,21 +348,21 @@ elem('#details').classList.add('hide')
       qualityBtn.classList.add('qbtn')
       qualityBtn.innerText=source.quality
       elem('#watch-quality').appendChild(qualityBtn)
-      
+
       qualityBtn.addEventListener('click',()=>{
         //calling the function again with new src no
         watchAnime(id,index)
         qualityOption=index
-        
+
       })
-      
-      
+
+
     })
-       
-        
-        
+
+
+
   })
-    
+
 }
 
 //search box functionality
@@ -312,6 +391,9 @@ function searchAnime(aname,pg=1,isGenre=false){
   results='results'
   if(isGenre){
     results='genre'
+    
+  }else{
+    
   }
   //shitty code-writing html from js for the bavk button and result title
 elem('#results-container').innerHTML=`  <button class="btn violet" onclick="navigateToHome()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -320,24 +402,32 @@ elem('#results-container').innerHTML=`  <button class="btn violet" onclick="navi
     
 <h2 class='font-2' >${results}: ${aname}</h2>`
 genreIndicator=''
+genreIndicator2='?'
 if(isGenre){
+  if(url==burl){
   genreIndicator='genre/'
+  console.log('still old')
+  }else{
+    genreIndicator='genre?genres=["'
+    aname=aname.charAt(0).toUpperCase()+aname.slice(1)
+    genreIndicator2='"]&'
+  }
 }
 
-fetch(url+genreIndicator+aname+'?page='+pg).then((r)=>{
+fetch(url+genreIndicator+aname+genreIndicator2+'page='+pg).then((r)=>{
   return r.json()
 }).then((data)=>{
- 
+
   data.results.forEach((anime)=>{
     createAnimeCard(anime,'#results-container')
-   
-   
+
+
   })
   if(data.results.length==0){
      elem('#results-container').innerHTML+='<h3 class="text-salmon font-2">no results found</h3>'
    }
-  
-  
+
+
   //next page button
     if(data.hasNextPage){
     nextdiv=document.createElement('div')
@@ -358,7 +448,7 @@ fetch(url+genreIndicator+aname+'?page='+pg).then((r)=>{
       nextBtn.remove()
     })
   }
-  
+
 })
 }
 
@@ -381,12 +471,13 @@ function createAnimeTile(anime,location, position,notdefault=false)
   tile.classList.add('anime-tile')
   tile.classList.add('shadow')
   tile.classList.add('card')
+  tile.classList.add('anime-fade')
   if(position!=0){
   tile.setAttribute('pos', position)
   }
   tile.style.background='url("'+anime.image+'")'
   tilename=document.createElement('span')
-  tilename.innerText=anime.title
+  tilename.innerText=anime.title.english||anime.title.romaji||anime.title
   tile.appendChild(tilename)
   elem(location).appendChild(tile)
   if(!notdefault){
@@ -395,7 +486,7 @@ function createAnimeTile(anime,location, position,notdefault=false)
     loadAnimeDetails(anime.id)
     elem('#home').classList.add('hide')
     elem('#search-form').classList.add('hide')
-    
+
   })}
   return tile
 }
@@ -403,7 +494,12 @@ function createAnimeTile(anime,location, position,notdefault=false)
 //我必须吃屎才能做到这一点
 
 function loadHome(pageno=1, location='#top-airing',slides=true){
-  fetch(url+'top-airing?page='+pageno).then((r)=>{
+  if(url==burl){
+    home='top-airing'
+  }else{
+    home='trending'
+  }
+  fetch(url+`${home}?page=`+pageno).then((r)=>{
   return r.json()
 }).then((data)=>{
   data.results.forEach((anime,index)=>{
@@ -412,6 +508,7 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
     if(slides){
     swh=document.createElement('div')
     swh.classList.add('swiper-slide')
+    
     sw=document.createElement('div')
     sw.classList.add('card')
     sw.classList.add('slide')
@@ -420,10 +517,10 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
     sc.classList.add('slide-container')
     sd=document.createElement('div')
     sd.classList.add('tobot')
-    
+
     h=document.createElement('h1')
-    h.innerText=anime.title
-    
+    h.innerText=anime.title.english||anime.title.romaji||anime.title
+
     sb=document.createElement('button')
     sb.classList.add('btn')
     sb.classList.add('violet')
@@ -433,7 +530,7 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
       loadAnimeDetails(anime.id)
        elem('#home').classList.add('hide')
     elem('#search-form').classList.add('hide')
-      
+
     })
     sd.appendChild(h)
     sd.appendChild(sb)
@@ -441,13 +538,28 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
     sw.appendChild(sc)
     swh.appendChild(sw)
     elem('.swiper-wrapper').appendChild(swh)
-    
+
   }
-  
+
 }  )
 
 })
 }
+function loadPopular(){
+  if(url==murl){
+    fetch(url+'popular').then(dat=>{return dat.json()}).then(r=>{
+      r.results.forEach((anime)=>{
+        createAnimeTile(anime,'#goated',0)
+      })
+    })
+  }else{
+    elem('#popular').classList.add('hide')
+  }
+}
+loadPopular()
+
+
+
 
 loadHome()
 
@@ -468,37 +580,29 @@ function tgdarkmode(el){
   el.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun-fill" viewBox="0 0 16 16">
   <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
 </svg>`
-    
+
   }}
 }
 
 
-function loadSpecific(collection,location){
-  for (i of collection){
-  fetch(url+'info/'+i).then((r)=>{
-   return r.json()
- }).then((ani)=>{
-   tile=createAnimeTile(ani,location,0)
- })
 
-}}
 
-best=['one-piece','bleach','naruto','dragon-ball-z','shingeki-no-kyojin','hunter-x-hunter','doraemon-1979','pokemon','death-note','fullmetal-alchemist-brotherhood','jojos-bizarre-adventure','sword-art-online','kimetsu-no-yaiba','kimi-no-na-wa','tokyo-ghoul']
+
 
 loadHome(2,'#popular-airing',false)
-loadSpecific(best,'#goated')
+
 //automatically setting darkmode if system in darkmode
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     tgdarkmode(elem("#darkmodet2"))
     elem('#darkmodet').innerHTML=elem('#darkmodet2').innerHTML
-    
+
 }
 
 //slide show setup
 const swiper = new Swiper('.swiper', {
   // Optional parameters
   direction: 'vertical',
-  
+
 
 
   // If we need pagination
@@ -511,4 +615,4 @@ autoplay: {
   slidesPerGroup:1,
   slidesPerView:1
 })
-  
+
