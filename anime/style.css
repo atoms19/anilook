@@ -24,12 +24,12 @@ body.darkmode .inp{
   border-color:#222;
   background: transparent;
   color:white;
- 
-}
-
-@media only screen and (min-width: 768px){
 
 }
+.block{
+  max-width:20rem;
+}
+
 .img{
   max-height:80vh;
   display:block;
@@ -49,13 +49,15 @@ body.darkmode .inp{
   perspective:1000px;
   transition:0.32s;
   cursor:pointer;
+  max-width:30rem;
+  
 }
 .anime-card:active{
  transform:scale(1.1);
-  
+
 }
 #details-genre{
- 
+
 }
 #details-info{
   display:inline;
@@ -67,11 +69,11 @@ body.darkmode .inp{
 .flex-btw{
   justify-content: space-between;
 }
-
-
 .anime-card img{
-  max-height:20rem;
+  height:auto;
+  max-height:30rem;
   width:100%;
+  
 }
 #watch-episodes{
   display:flex;
@@ -94,8 +96,8 @@ body.darkmode .inp{
 }
 #searchbox .btn{
   height:100%;
-  
-  
+
+
 }
 #loader{
   position:fixed;
@@ -120,7 +122,7 @@ body.darkmode .inp{
   height:25rem;
 }
 #details-container{
-  
+
 display:flex;
   align-items:center;
   justify-content: center;
@@ -136,7 +138,7 @@ display:flex;
 .swiper {
   width: 100%;
   height:17rem;
-  
+
 }
 .swiper-slide{
   width:100%;
@@ -149,7 +151,7 @@ display:flex;
   background-position:center center !important;
   background-repeat:no-repeat!important;
   position:relative;
-  
+
 }
 .swiper-pagination *{
   background:var(--violet);
@@ -159,13 +161,13 @@ display:flex;
   font-family:"Montserrat",sans-serif;
   color:#fff;
   margin-bottom:1rem;
-  
+
 }
 .slide-container{
   width:100%;
  position: relative;
   height:100%;
-  background:rgba(36, 19, 47, 0.41);
+  background:rgba(36, 19, 47, 0.61);
   backdrop-filter:blur(3px);
 }
 .tobot{
@@ -185,7 +187,7 @@ display:flex;
   overflow:auto;
   display:flex;
   flex-direction:row;
-  
+
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -205,7 +207,7 @@ display:flex;
   margin-left:0.2rem;
   cursor:pointer;
   position:relative;
-  
+
 }
 .anime-tile::after{
   content:attr(pos);
@@ -218,7 +220,7 @@ display:flex;
   background:var(--defaultpos);
   position:absolute;
   top:0;
-  
+
 }
 .anime-tile span{
   position:absolute;
@@ -244,11 +246,11 @@ background: rgba(128, 68, 219, 0.79);
 #details-title{
   font-size:2rem;
   text-align:center;
-  
+
 }
 #watch-btn{
   padding:0.75rem 0;
-  
+
 }
 #info-list{
   word-break:break-all;
@@ -257,7 +259,7 @@ background: rgba(128, 68, 219, 0.79);
 #info-list span{
   color:var(--colorsec)!important;
   padding:0.3rem 0 !important;
- 
+
 }
 .genre-tile{
  padding:0.5rem 2rem;
@@ -271,11 +273,43 @@ background: rgba(128, 68, 219, 0.79);
   min-width:5rem;
   word-wrap:no-wrap;
   opacity:0.75;
-  
+
 }
 small{
   font-size:0.13rem;
 }
 .genre-tile-container{
   height:7rem;
+}
+.xray-tile-container{
+  height:11rem;
+}
+.character-tile{
+  display: inline-flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
+  flex:0 0 7rem;
+  width:15rem;
+  height:7rem;
+  margin-left:0.5rem;
+  cursor:pointer;
+  position:relative;
+}
+.character-img{
+  width:5rem;
+  height:5rem;
+  border-radius:50%;
+}
+.character-name{
+  font-size:0.8rem;
+  font-weight:500;
+  margin-bottom:0;
+  text-align: center;
+}
+.character-va{
+  margin-top:0;
+  color:var(--grey);
+  font-size:0.57rem;
+  text-align:center;
 }
