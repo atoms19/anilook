@@ -134,6 +134,7 @@ function createAnimeCard(anime, location){
 currentEp=0
 //details about anime
 function loadAnimeDetails(id,from='home'){
+window. scrollTo(0, 0);
   fetch(url+'info/'+id).then((r)=>{
     return r.json()
   }).then(data=>{
