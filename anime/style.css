@@ -298,8 +298,9 @@ small{
 }
 .character-img{
   width:5rem;
-  height:5rem;
-  border-radius:50%;
+  height:6rem;
+  border-radius:1.7rem;
+ 
 }
 .character-name{
   font-size:0.8rem;
