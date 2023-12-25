@@ -24,7 +24,7 @@ let burl='https://anigojoapi.vercel.app/anime/gogoanime/'
 let murl= "https://anigojoapi.vercel.app/meta/anilist/"
 
 const old = new URLSearchParams(location.search).get('old');
-if(old){
+if(!old){
   url=burl
 }else{
   url=murl
@@ -60,7 +60,7 @@ Object.keys(animesChoosen).forEach((id,index)=>{
    tile=createAnimeTile(ani,'#continue-watching',0,true)
    tile.addEventListener('click',()=>{
      elem('#search-form').classList.add('hide')
-if(!old){
+if(url==murl){
       loadCharacters(ani.characters)
     }
 
@@ -229,8 +229,9 @@ elem('#related').innerHTML=''
     enddate=data.startDate.year+'--'+data.endDate.day+'/'+data.endDate.month+'/'+data.endDate.year
   }
   elem('#details-release').innerText=data.startDate.day+'/'+data.startDate.month+'/'+enddate
-  }
   loadCharacters(data.characters)
+  }
+  
   elem('#loader').classList.add('hide') //loading finished
     
     
