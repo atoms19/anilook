@@ -24,7 +24,7 @@ let burl='https://anigojoapi.vercel.app/anime/gogoanime/'
 let murl= "https://anigojoapi.vercel.app/meta/anilist/"
 
 const old = new URLSearchParams(location.search).get('old');
-if(!old){
+if(old){
   url=burl
 }else{
   url=murl
