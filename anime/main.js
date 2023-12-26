@@ -31,7 +31,7 @@ currpage=elem('.intro')
 function rhome(){
   currpage.classList.add('hide')
   loadSaves()
-  elem('#search-form').classList.remove('hide')
+ elem('#loader').classList.add('hide') elem('#search-form').classList.remove('hide')
   elem('.app').classList.remove('hide')
   elem('#home').classList.remove('hide')
   currpage=elem('#home')
