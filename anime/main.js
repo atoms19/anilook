@@ -37,7 +37,7 @@ function rhome(){
   currpage=elem('#home')
 }
 function rerror(){
-  
+
   currpage.classList.add('hide')
   elem('#loader').classList.add('hide')
   elem('#error').classList.remove('hide')
@@ -46,6 +46,7 @@ function rerror(){
 
 function rinfo(){
   rhome()
+  elem('#loader').classList.remove('hide')
   elem('#watch-btn').remove()
   w=document.createElement('button')
   w.classList.add('btn')
@@ -63,6 +64,7 @@ function rinfo(){
   currpage=elem('#details')
 }
 function rsearch(gen=false) {
+   rhome()
     elem('#search-form').classList.remove('hide')
   currpage.classList.add('hide')
     elem('#results').classList.remove('hide')
@@ -81,14 +83,14 @@ elem('#search-form').classList.add('hide')
     elem("#watch-screen").onplay=()=>{
     if(!skipped){
     skip=new URLSearchParams(location.search).get('skip')||0
-    
+
     elem('#watch-screen').currentTime=skip
     skipped=true
     }
-    
+
     }
     currpage=elem('#watch')
-    
+
 }
 function rintro() {
   currpage.classList.add('hide')
@@ -96,18 +98,29 @@ function rintro() {
   elem('.intro').classList.remove('hide')
   currpage=elem('.intro')
 }
+function rnot(){
+  currpage.classList.add('hide')
+  elem('#notfound').classList.remove('hide')
+  currpage=elem('#notfound')
+}
+
+
+
 
 
 function routeTo(str,callback=()=>{}){
-try{
+
   const newUrl = str;
-  
- 
+
+
   history.pushState(null,"", newUrl);
   callback()
   routeHandler()
-}catch(err){alert(err)}
+
 }
+
+
+
 function routeHandler(){
   route=window.location.pathname
   if(currpage==elem('#watch')){
@@ -129,20 +142,14 @@ function routeHandler(){
   }else if(route=='/error'){
     rerror()
   }else{
-    document.write(`<h1>404 error page do not exist</h1>`)
+    rnot()
   }
 //  alert(window.location.pathname)
 }
 
-addEventListener('popstate',()=>{routeHandler()})
-addEventListener('load',()=>{
-try{
-routeHandler()
-}catch(err){
-alert(err)
-}
-})
-addEventListener('hashchange',()=>{routeHandler()})
+addEventListener('popstate',routeHandler)
+addEventListener('load',routeHandler)
+
 
 
 //menu function
@@ -187,28 +194,28 @@ function saveAnime(id,ep){
   for (anime of animesChoosen){
     if(anime.animeId==id){
       anime.episode=ep
-     
+
       localStorage.setItem('animesaves',JSON.stringify(animesChoosen))
     }
   }
-    
+
 }
 
 function saveAnimeTime(id,time){
   for (anime of animesChoosen){
     if(anime.episode==id){
       anime.time=time
-     
+
       localStorage.setItem('animesaves',JSON.stringify(animesChoosen))
     }
   }
-    
+
 }
 
 
 function loadSaves(){
  Array.from(elem("#continue-watching").children).forEach(c=>c.remove())
- 
+
 
 animesChoosen=[]
 animesChoosen=JSON.parse(localStorage.getItem('animesaves'))||[]
@@ -232,7 +239,7 @@ elem('#loader').classList.remove('hide')
 routeTo('/info?id='+anime.animeId+'&background=1')
 setTimeout(()=>{routeTo(`/watch?ep=${anime.episode}&skip=${anime.time}`)
 },2000)
-  
+
   })
 })
 }
@@ -273,7 +280,7 @@ function createAnimeCard(anime, location){
   acard.addEventListener('click',()=>{
     elem('#loader').classList.remove('hide') //loading start
     routeTo('/info?id='+anime.id)
-   
+
      })
 }
 currentEp=0
@@ -293,7 +300,7 @@ function loadAnimeDetails(id, background=0){
       elem('#details').classList.add('hide')
       history.back()
     }
-    
+
 
 
    //loading anime details into elements 
@@ -304,7 +311,7 @@ function loadAnimeDetails(id, background=0){
     }else{
       information=data.description
       elem('#details-info').innerHTML=data.description.slice(0,250)+`<span class='text-read pack' onclick='elem("#details-info").innerHTML=information'>read more</span>`
-      
+
     }
     elem('#details-episodes').innerText=data.totalEpisodes
     elem('#details-sub').innerText=data.subOrDub
@@ -331,8 +338,8 @@ function loadAnimeDetails(id, background=0){
     ep.addEventListener('click',()=>{
       watchAnime(episode.id,qualityOption)
       saveAnime(id,episode.id)
-      
-     
+
+
       //changing current episode 
 
     })
@@ -344,7 +351,7 @@ function loadAnimeDetails(id, background=0){
 currentEp=0
   addAnime(id,{episode:data.episodes[0].id,name:data.title,image:data.image,animeId:id,time:0})
 routeTo('/watch?ep='+data.episodes[0].id)
-  
+
 
 
   })
@@ -352,16 +359,16 @@ routeTo('/watch?ep='+data.episodes[0].id)
     elem('#watch-btn').innerText='read'
     elem('#watch-btn').setAttribute('disabled','')
     elem('#watch-btn').style.background='var(--orange)'
-    
+
   }else{
 elem('#watch-btn').innerText='watch'
 elem('#watch-btn').removeAttribute('disabled')
     elem('#watch-btn').style.background='var(--violet)'
   }
-  
+
   //share btn setup
   elem('#share-btn').onclick=()=>{
-        
+
         if (navigator.share) {
             navigator.share({
                 title: 'watch '+data.title.english,
@@ -376,7 +383,7 @@ elem('#watch-btn').removeAttribute('disabled')
             });
         } else {
             console.log('Web Share API not supported');
-            
+
             var tempInput = document.createElement('input');
         document.body.appendChild(tempInput);
         tempInput.value =window.location.href;
@@ -384,23 +391,23 @@ elem('#watch-btn').removeAttribute('disabled')
         document.execCommand('copy');
         document.body.removeChild(tempInput);
 alert('share link copied to clipboard')
-        
+
             // Provide a fallback or alternative sharing solution here
         }
   }
-  
-  
+
+
   if(url==murl){
   elem('#recommendations').innerHTML=''
   data.recommendations.forEach(r=>{
-    
+
     createAnimeTile(r,'#recommendations',0)
   })
-  
-  
+
+
 elem('#related').innerHTML=''
   data.relations.forEach(r=>{
-    
+
     createAnimeTile(r,'#related',0)
   })
   enddate=data.startDate.year+'--now'
@@ -413,12 +420,12 @@ elem('#related').innerHTML=''
   if(!background){
   elem('#loader').classList.add('hide')
   }//loading finished
-    
-    
-    
+
+
+
 
   }).catch(err=>{
-    
+
     routeTo('/error')
    // elem('#loader').classList.add('hide') 
   })
@@ -462,14 +469,14 @@ function createChar(c){
  cdiv.appendChild(ch)
  cdiv.appendChild(cva)
  charcard.appendChild(cdiv)
- 
+
   elem('#xray').appendChild(charcard)
 }
 
 //anime streaming links
 
 function watchAnime(id,srcno=0){
-  
+
 
   elem('#loader').classList.remove('hide')
 
@@ -503,8 +510,8 @@ function watchAnime(id,srcno=0){
     console.log(e.target.currentTime)
     console.log(localStorage.saves)
   }
-        
-        
+
+
     //clearing watch quality option and setting it to current quality 
     elem('#watch-quality').innerHTML=''
     elem('#watch-qualityName').innerText='current quality:'+data.sources[srcno].quality
@@ -539,11 +546,11 @@ function watchAnime(id,srcno=0){
 
 elem('#search-btn').addEventListener('click',()=>{
   searchval=elem('#search-inp').value
-  
+
   if(searchval!=''){
     routeTo('/search?q='+searchval+'&pg='+searchpgcount)
     searchpgcount=1
-    
+
     elem('#search-inp').value=''
 
   }
@@ -562,9 +569,9 @@ function searchAnime(aname,pg=1,isGenre=false){
   results='results'
   if(isGenre){
     results='genre'
-    
+
   }else{
-    
+
   }
   //shitty code-writing html from js for the bavk button and result title
 elem('#results-container').innerHTML=`  <button class="btn violet" onclick="routeTo('/home')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -657,7 +664,7 @@ function createAnimeTile(anime,location, position,notdefault=false)
   tile.addEventListener('click',()=>{
     elem('#loader').classList.remove('hide')
     routeTo('/info?id='+anime.id)
-    
+
   })}
   return tile
 }
@@ -665,7 +672,7 @@ function createAnimeTile(anime,location, position,notdefault=false)
 //我必须吃屎才能做到这一点
 
 function loadHome(pageno=1, location='#top-airing',slides=true){
-  
+
   if(url==burl){
     home='top-airing'
   }else{
@@ -680,7 +687,7 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
     if(slides){
     swh=document.createElement('div')
     swh.classList.add('swiper-slide')
-    
+
     sw=document.createElement('div')
     sw.classList.add('card')
     sw.classList.add('slide')
@@ -790,5 +797,3 @@ autoplay: {
 
 //current page
 currpage=elem('.intro')
-
-
