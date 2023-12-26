@@ -29,14 +29,14 @@
 
 
   <!--landing page-->
-  <section class="pack intro">
+  <section class="pack intro anime-fade">
     <h1 class="font-jumbo font-2">Gojo</h1>
     <h4 class="font-2">safe|ads free|anime</h4>
     <image width=220rem height=200rem class="" src='./anilooklogo.png'></image>
     <p class="text-grey rounded">a simple web application to watch anime online with ease, say goodbye to getting redirected to spooky sites,ads and trackers </p>
 
 <div class="center">
-    <button onclick="elem('.app').classList.remove('hide');elem('.intro').classList.add('hide')" class="btn block violet btn-scale" >start exploring</button>
+    <button onclick="rhome();routeTo('/home')" class="btn block violet btn-scale" >start exploring</button>
     </div>
 
     <h4>why use gojo over others?</h4>
@@ -51,10 +51,9 @@
       we dont store anime on any of our servers its all from third party websites mainly gogoanime 
     </note>
     <note victory>
-      gojotv has been updated and lots of new features have been added including x-ray, recommendations and ratings. continue watching saved earlier may not work for this new format 
-      old gojo is still available if interested <a href="https://gojotv.vercel.app?old=true">click me :)</a>
+      enjoy gogo provider with more content sub and dub<a href="https://gojotv.vercel.app?old=true">click me :)</a>
     </note>
-    <note info> add gojo to your phones home screen by clicking on browser menu and selecting addd to home screen to use gojo as an application</note>
+    <note info> add gojo to your phones home screen for a smooth applike experience</note>
     <footer class="center">
       <hr>
       built with 💥 by atoms19
@@ -62,7 +61,7 @@
   </section>
 
   <!--application-->
-  <section class="app hide">
+  <section class="app hide anime-fade">
   <nav class='nav violet anime-top'>
     <div class="nav-logo font-2" onclick="location.reload()">gojo</div>
   <ul class="hide-till-md">
@@ -87,7 +86,7 @@
 </svg></li>
        <li onclick="window.scrollTo(0, 0)">home</li>
        <li onclick="alert('under construction,will be ready by aug 2024')">manga</li>
-         <li onclick="localStorage.setItem('saves',JSON.stringify({}));alert('data cleared');loadSaves()">clear history</li>
+         <li onclick="localStorage.setItem('saves',JSON.stringify([]));alert('data cleared');loadSaves()">clear history</li>
 
     </ul>
 </div>
@@ -195,8 +194,8 @@
      <img id="details-img" src="" class="img" alt="">
     </div>
      <h1 class="font-2" id="details-title"></h1>
-     <div class="center">
-     <button id="watch-btn" class="btn block violet">watch</button>
+     <div class="center" id="watch-opt">
+     <button id="watch-btn" class="btn block violet">watch</button><button id="share-btn" class=" pink opacity btn">share</button>
      </div>
      <div class="center">
      <div id="info-container"><p id="details-info"></p></div>
@@ -258,7 +257,7 @@
   <!--watching section-->
      <section id="watch" class=" wrap hide">
        <div class="flex flex-btw">
-        <button id="back-2" class="violet btn" onclick="navigateToDetails()">
+        <button id="back-2" class="violet btn" onclick="history.back()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg>
@@ -281,7 +280,7 @@
 
        </div>
        <div id="xray-box">
-         <h4>x-ray</h4>
+         <h4>characters</h4>
          
          <div id="xray"
          class="anime-tile-container xray-tile-container">
@@ -299,7 +298,13 @@
     </div>
   </section>
  </section>
-
+<section id="error" class="pack wrap center hide anime-jelly">
+  
+  <h1>something went wrong</h1>
+  
+  <p class="text-center ">something went wrong fetching this data it may not be available on the new site</p>
+  <a href="https://gojotv.vercel.app/?old=1" class="btn violet">go to old site</a>
+</section>
 
   <script src="main.js"></script>
 </body>
