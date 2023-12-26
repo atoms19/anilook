@@ -4,6 +4,135 @@ function elem(qry){
   return document.querySelector(qry)
 }
 
+if(localStorage.alerted!='1'){
+  alert(`gojotv has been updated again
+  here is the list of new features
+  
+ ->characters info slightly tweaked
+ ->continue watching is now more data efficient 
+ ->continue watching now support resuming on exact time you left of 
+ ->continue watching now compactble with both providers
+ ->continue watching update real time 
+ ->gojo tv now functions like a real website and support back navigation
+ ->mangas are now highlighted with orange colour
+ -> share button to share your favourite animes as links to your friends
+ 
+ sorry for the inconvenience your earlier saved continue watching will no longer work 💀
+  gogo provider is still working in case u wanna watch some other animes not in anilist 
+ 
+  `)
+  localStorage.alerted=1
+}
+
+//routing functions
+function rhome(){
+  currpage.classList.add('hide')
+  loadSaves()
+  elem('#search-form').classList.remove('hide')
+  elem('.app').classList.remove('hide')
+  elem('#home').classList.remove('hide')
+  currpage=elem('#home')
+}
+function rerror(){
+  
+  currpage.classList.add('hide')
+  elem('#loader').classList.add('hide')
+  elem('#error').classList.remove('hide')
+  currpage=elem('#error')
+}
+
+function rinfo(){
+  
+  elem('#watch-btn').remove()
+  w=document.createElement('button')
+  w.classList.add('btn')
+  w.classList.add('block')
+  w.classList.add('violet')
+  w.id='watch-btn'
+  w.innerText='watch'
+  elem('#watch-opt').insertBefore(w,elem('#share-btn'))
+  currpage.classList.add('hide')
+  elem('#search-form').classList.add('hide')
+  elem('#details').classList.remove('hide')
+  id=new URLSearchParams(location.search).get('id');
+  background=new URLSearchParams(location.search).get('background')
+  loadAnimeDetails(id, background)
+  currpage=elem('#details')
+}
+function rsearch(gen=false) {
+    elem('#search-form').classList.remove('hide')
+  currpage.classList.add('hide')
+    elem('#results').classList.remove('hide')
+    q=new URLSearchParams(location.search).get('q');
+    pg=new URLSearchParams(location.search).get('pg');
+    searchAnime(q,pg,gen)
+    currpage=elem('#results')
+}
+function rwatch(){
+currpage.classList.add('hide')
+elem('#search-form').classList.add('hide')
+    elem('#watch').classList.remove('hide')
+    ep=new URLSearchParams(location.search).get('ep');
+    watchAnime(ep)
+    skipped=false
+    elem("#watch-screen").onplay=()=>{
+    if(!skipped){
+    skip=new URLSearchParams(location.search).get('skip')||0
+    
+    elem('#watch-screen').currentTime=skip
+    skipped=true
+    }
+    
+    }
+    currpage=elem('#watch')
+    
+}
+function rintro() {
+  currpage.classList.add('hide')
+  elem('.app').classList.add('hide')
+  elem('.intro').classList.remove('hide')
+  currpage=elem('.intro')
+}
+
+
+function routeTo(str,callback=()=>{}){
+  const newUrl = str;
+  
+ 
+  history.pushState(null, null, newUrl);
+  callback()
+  routeHandler()
+}
+function routeHandler(){
+  route=window.location.pathname
+  if(currpage==elem('#watch')){
+    elem('#watch-screen').pause()
+  }
+  if(route=='/'|| route=='/index.html'){
+    rintro()
+  }else if(route=='/home'){
+    rhome()
+
+  }else if(route=='/info'){
+    rinfo()
+  }else if(route=='/search'){
+    rsearch()
+  }else if(route=='/genre'){
+    rsearch(1)
+  }else if(route=='/watch'){
+    rwatch()
+  }else if(route=='/error'){
+    rerror()
+  }else{
+    document.write(`<h1>404 error page do not exist</h1>`)
+  }
+//  alert(window.location.pathname)
+}
+
+addEventListener('popstate',routeHandler)
+addEventListener('load',routeHandler)
+
+
 //menu function
 function openMenu(){
         elem(".sidenav").classList.toggle("active")
@@ -18,12 +147,14 @@ fetch('https://animechan.xyz/api/random')
     .then(quote => console.log(quote))*/
     //https://api.consumet.org/anime/
 
-//anime provider
+//anime providers 
+
 
 let burl='https://anigojoapi.vercel.app/anime/gogoanime/'
 let murl= "https://anigojoapi.vercel.app/meta/anilist/"
 
-const old = new URLSearchParams(location.search).get('old');
+let old = new URLSearchParams(location.search).get('old');
+//old=true
 if(old){
   url=burl
 }else{
@@ -32,63 +163,69 @@ if(old){
 
 qualityOption=0
 
-animesChoosen={}
+animesChoosen=[]
 //saving anime
-function saveAnime(id,ep){
-  animesChoosen[id]={ep:ep}
+function addAnime(id,obj){
+  animesChoosen.unshift(obj)
   localStorage.setItem('saves',JSON.stringify(animesChoosen))
 }
 
+
+function saveAnime(id,ep){
+  for (anime of animesChoosen){
+    if(anime.animeId==id){
+      anime.episode=ep
+     
+      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+    }
+  }
+    
+}
+
+function saveAnimeTime(id,time){
+  for (anime of animesChoosen){
+    if(anime.episode==id){
+      anime.time=time
+     
+      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+    }
+  }
+    
+}
+
+
 function loadSaves(){
- elem("#continue-watching").innerHTML=''
-animesChoosen={}
-animesChoosen=JSON.parse(localStorage.getItem('saves'))||{}
-if(Object.keys(animesChoosen).length>7){
+ Array.from(elem("#continue-watching").children).forEach(c=>c.remove())
+ 
+
+animesChoosen=[]
+animesChoosen=JSON.parse(localStorage.getItem('saves'))||[]
+
+animesChoosen=animesChoosen.filter(
+  (obj, index, self) =>
+    index === self.findIndex((o) => o.animeId=== obj.animeId)
+);
+
+
+if(animesChoosen.length>5){
   console.log('limit reached')
-  animesChoosen={}
+  animesChoosen.pop()
   localStorage.setItem('saves',JSON.stringify(animesChoosen))
 }
-if(Object.keys(animesChoosen).length==0){
+if(animesChoosen.length==0){
   elem('#continue').classList.add('hide')
 }else{
 elem('#continue').classList.remove('hide')
 }
-Object.keys(animesChoosen).forEach((id,index)=>{
- fetch(url+'info/'+id).then((r)=>{
-   return r.json()
- }).then((ani)=>{
-   tile=createAnimeTile(ani,'#continue-watching',0,true)
-   tile.addEventListener('click',()=>{
-     elem('#search-form').classList.add('hide')
-if(url==murl){
-      loadCharacters(ani.characters)
-    }
-
-     ani.episodes.forEach((episode,index)=>{
-    ep=document.createElement('button')
-    ep.classList.add('btn')
-    ep.classList.add('violet')
-    ep.classList.add('opacity')
-    ep.innerText=episode.number
-    ep.addEventListener('click',()=>{
-      watchAnime(episode.id,qualityOption)
-      animesChoosen[id].ep=index
-      currentEp=index
-      localStorage.setItem('saves',JSON.stringify(animesChoosen))
-      //changing current episode 
-
-    })
-    
-    elem('#watch-episodes').appendChild(ep)
-    })
-     elem('#back-2').onclick=()=>{location.reload()}
-     currentEp=animesChoosen[id].ep
-     elem('#home').classList.add('hide')
-     watchAnime(ani.episodes[animesChoosen[id].ep].id,0)
-   })
- })
-
-
+animesChoosen.forEach((anime,index)=>{
+  anitile=createAnimeTile({title:anime.name,image:anime.image},"#continue-watching",0,true)
+  anitile.addEventListener('click',()=>{
+elem('#loader').classList.remove('hide')
+routeTo('/info?id='+anime.animeId+'&background=1')
+setTimeout(()=>{routeTo(`/watch?ep=${anime.episode}&skip=${anime.time}`)
+},2000)
+  
+  })
 })
 }
 
@@ -127,35 +264,28 @@ function createAnimeCard(anime, location){
   //load anime details on click
   acard.addEventListener('click',()=>{
     elem('#loader').classList.remove('hide') //loading start
-    loadAnimeDetails(anime.id,'search')
-    elem('#search-form').classList.add('hide')
+    routeTo('/info?id='+anime.id)
+   
      })
 }
 currentEp=0
 //details about anime
-function loadAnimeDetails(id,from='home'){
-window. scrollTo(0, 0);
+function loadAnimeDetails(id, background=0){
+  window.scrollTo(0, 0);
   fetch(url+'info/'+id).then((r)=>{
     return r.json()
   }).then(data=>{
     //hiding results screen
     elem('#results').classList.add('hide')
+    if(!background){
     elem('#details').classList.remove('hide')
-
+}
     //setting details back button
-    elem('#details-back').addEventListener('click',()=>{
+    elem('#details-back').onclick=()=>{
       elem('#details').classList.add('hide')
-      if(from=='home'){
-
-        elem('#home').classList.remove('hide')
-        elem('#search-form').classList.remove('hide')
-      }else if(from=='search'){
-        elem('#home').classList.add('hide')
-        elem('#results').classList.remove('hide')
-        elem('#search-form').classList.remove('hide')
-      }
-
-    })
+      history.back()
+    }
+    
 
 
    //loading anime details into elements 
@@ -165,7 +295,7 @@ window. scrollTo(0, 0);
     elem('#details-info').innerHTML=data.description
     }else{
       information=data.description
-      elem('#details-info').innerHTML=data.description.slice(0,250)+`<span class='text-violet pack' onclick='elem("#details-info").innerHTML=information'>read more</span>`
+      elem('#details-info').innerHTML=data.description.slice(0,250)+`<span class='text-read pack' onclick='elem("#details-info").innerHTML=information'>read more</span>`
       
     }
     elem('#details-episodes').innerText=data.totalEpisodes
@@ -192,9 +322,9 @@ window. scrollTo(0, 0);
     ep.innerText=episode.number
     ep.addEventListener('click',()=>{
       watchAnime(episode.id,qualityOption)
-      animesChoosen[id].ep=index
-      currentEp=index
-      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+      saveAnime(id,episode.id)
+      
+     
       //changing current episode 
 
     })
@@ -202,15 +332,55 @@ window. scrollTo(0, 0);
     elem('#watch-episodes').appendChild(ep)
     })
   //watch button loads the first episode by default 
-  elem('#watch-btn').addEventListener('click',()=>{
-
-
-    watchAnime(data.episodes[0].id)
-  currentEp=0
-  saveAnime(id,0)
+  epclickEv=elem('#watch-btn').addEventListener('click',()=>{
+currentEp=0
+  addAnime(id,{episode:data.episodes[0].id,name:data.title,image:data.image,animeId:id,time:0})
+routeTo('/watch?ep='+data.episodes[0].id)
+  
 
 
   })
+  if(data.type=='MANGA'){
+    elem('#watch-btn').innerText='read'
+    elem('#watch-btn').setAttribute('disabled','')
+    elem('#watch-btn').style.background='var(--orange)'
+    
+  }else{
+elem('#watch-btn').innerText='watch'
+elem('#watch-btn').removeAttribute('disabled')
+    elem('#watch-btn').style.background='var(--violet)'
+  }
+  
+  //share btn setup
+  elem('#share-btn').onclick=()=>{
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'watch '+data.title.english,
+                text:'watch ' +(data.title.english||data.title)+' on gojotv',
+                url:window.location.href
+            })
+            .then(() => {
+                console.log('Successfully shared');
+            })
+            .catch((error) => {
+                console.error('Error sharing:', error);
+            });
+        } else {
+            console.log('Web Share API not supported');
+            
+            var tempInput = document.createElement('input');
+        document.body.appendChild(tempInput);
+        tempInput.value =window.location.href;
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+alert('share link copied to clipboard')
+        
+            // Provide a fallback or alternative sharing solution here
+        }
+  }
+  
   
   if(url==murl){
   elem('#recommendations').innerHTML=''
@@ -225,25 +395,23 @@ elem('#related').innerHTML=''
     
     createAnimeTile(r,'#related',0)
   })
-  enddate='now'
+  enddate=data.startDate.year+'--now'
   if(data.status!='Ongoing'){
     enddate=data.startDate.year+'--'+data.endDate.day+'/'+data.endDate.month+'/'+data.endDate.year
   }
   elem('#details-release').innerText=data.startDate.day+'/'+data.startDate.month+'/'+enddate
   loadCharacters(data.characters)
   }
-  
-  elem('#loader').classList.add('hide') //loading finished
+  if(!background){
+  elem('#loader').classList.add('hide')
+  }//loading finished
     
     
     
 
   }).catch(err=>{
     
-    document.write(`<link href="https://cdn.jsdelivr.net/gh/atoms19/ILUS.CSS/dist/ILUS5.min.css" rel="stylesheet">
-    <div class='pack hero'>
-    <h1 class='font-2'>error in loading</h1> this anime could not be loaded please visit the older site and check if it is available there <a href='https://gojotv.vercel.app?old=true' class='btn violet'>visit old gojo</a>
-    </div> ${err}`)
+    routeTo('/error')
    // elem('#loader').classList.add('hide') 
   })
 }
@@ -260,24 +428,7 @@ elem('#related').innerHTML=''
    }
  }
 
-//going back to results page
-function navigateToResults(){
-  elem('#results').classList.remove('hide')
-    elem('#details').classList.add('hide')
-}
-//going back to details page
-function navigateToDetails(){
-   elem('#details').classList.remove('hide')
-    elem('#watch').classList.add('hide')
-    elem('#watch-screen').pause() //pausing video if exited
-}
-function navigateToHome(){
-
-  elem('#results').classList.add('hide')
-  elem('#home').classList.remove('hide'
-  )
-
-}
+//going back to r
 function loadCharacters(charlist){
   elem('#xray').innerHTML=''
   charlist.forEach((c)=>{createChar(c)})
@@ -310,10 +461,9 @@ function createChar(c){
 //anime streaming links
 
 function watchAnime(id,srcno=0){
+  
 
   elem('#loader').classList.remove('hide')
-elem('#details').classList.add('hide')
-    elem('#watch').classList.remove('hide')
 
  elem('#watch-title').innerText=id
 
@@ -339,6 +489,14 @@ elem('#details').classList.add('hide')
         elem("#watch-screen").addEventListener('loadstart', () => {
           elem('#loader').classList.add('hide')
         })
+  //watch timer setup
+  elem('#watch-screen').onpause=(e)=>{
+    saveAnimeTime(id,e.target.currentTime)
+    console.log(e.target.currentTime)
+    console.log(localStorage.saves)
+  }
+        
+        
     //clearing watch quality option and setting it to current quality 
     elem('#watch-quality').innerHTML=''
     elem('#watch-qualityName').innerText='current quality:'+data.sources[srcno].quality
@@ -363,6 +521,8 @@ elem('#details').classList.add('hide')
 
 
 
+  }).catch((err)=>{
+    routeTo('/error')
   })
 
 }
@@ -371,12 +531,13 @@ elem('#details').classList.add('hide')
 
 elem('#search-btn').addEventListener('click',()=>{
   searchval=elem('#search-inp').value
+  
   if(searchval!=''){
-    searchpgcount=2
-    searchAnime(searchval)
+    routeTo('/search?q='+searchval+'&pg='+searchpgcount)
+    searchpgcount=1
+    
     elem('#search-inp').value=''
-    elem('#home').classList.add('hide')
-    elem('#results').classList.remove('hide')
+
   }
 })
 elem('#searchbox').addEventListener('keypress',(e)=>{
@@ -398,7 +559,7 @@ function searchAnime(aname,pg=1,isGenre=false){
     
   }
   //shitty code-writing html from js for the bavk button and result title
-elem('#results-container').innerHTML=`  <button class="btn violet" onclick="navigateToHome()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+elem('#results-container').innerHTML=`  <button class="btn violet" onclick="routeTo('/home')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg></button>
     
@@ -456,8 +617,7 @@ fetch(url+genreIndicator+aname+genreIndicator2+'page='+pg).then((r)=>{
 
 function loadGenre(t){
   searchAnime(t,1,true)
-  elem('#home').classList.add('hide')
-    elem('#results').classList.remove('hide')
+  routeTo('/genre?q='+t)
 }
 
 
@@ -473,6 +633,9 @@ function createAnimeTile(anime,location, position,notdefault=false)
   tile.classList.add('anime-tile')
   tile.classList.add('shadow')
   tile.classList.add('card')
+  if(anime.type=='MANGA'){
+    tile.classList.add('manga-tile')
+  }
   tile.classList.add('anime-fade')
   if(position!=0){
   tile.setAttribute('pos', position)
@@ -485,10 +648,8 @@ function createAnimeTile(anime,location, position,notdefault=false)
   if(!notdefault){
   tile.addEventListener('click',()=>{
     elem('#loader').classList.remove('hide')
-    loadAnimeDetails(anime.id)
-    elem('#home').classList.add('hide')
-    elem('#search-form').classList.add('hide')
-
+    routeTo('/info?id='+anime.id)
+    
   })}
   return tile
 }
@@ -496,6 +657,7 @@ function createAnimeTile(anime,location, position,notdefault=false)
 //我必须吃屎才能做到这一点
 
 function loadHome(pageno=1, location='#top-airing',slides=true){
+  
   if(url==burl){
     home='top-airing'
   }else{
@@ -617,4 +779,8 @@ autoplay: {
   slidesPerGroup:1,
   slidesPerView:1
 })
+
+//current page
+currpage=elem('.intro')
+
 
