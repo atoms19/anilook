@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>offline</title>
+
+  <style>
+  .center{
+    text-align:center;
+    padding-top:3rem;
+  }
+    body{
+         --violet:#7c30ff;
+         font-family:sans-serif;
+    }
+    .text-violet{
+     color:var(--violet);
+    }
+    .violet{
+      background:var(--violet);
+    }
+    
+    .btn{
+    text-decoration:none;
+    color:white;
+    display:inline-flex;
+    margin:0.4rem 0.19rem;
+    background-color:var(--violet);
+    padding:0.7rem 1.5rem;
+    font-family:'Roboto',
+    sans-serif;
+    border-radius:7px;
+    border:none;
+    font-weight:bold;
+    font-size:0.85rem;
+    outline:none;
+    text-align:center;
+    transition:0.1s;
+    cursor:pointer;
+    box-shadow:none;
+    -webkit-tap-highlight-color: transparent;
+    justify-content:center;
+   align-items:center;
+   vertical-align:middle;
+}
+btn:active,.btn:active{
+    transform:scale(0.9);
+}
+  </style>
+</head>
+<body class="bright pack wrap center">
+<h1 class="text-violet">you are offline </h1>
+<p>you need internet connection to watch anime using gojotv please connect to a network</p>
+<a href="https://gojotv.vercel.app"class="btn violet">try again</a>
+</body>
+
+</html>
