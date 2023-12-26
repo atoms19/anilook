@@ -99,7 +99,7 @@ function routeTo(str,callback=()=>{}){
   const newUrl = str;
   
  
-  history.pushState(null, null, newUrl);
+  history.pushState(null,"", newUrl);
   callback()
   routeHandler()
 }
