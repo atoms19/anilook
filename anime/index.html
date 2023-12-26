@@ -310,6 +310,19 @@
   <p class="text-grey text-center">sorry we couldn't find the section you are looking for in our site</p>
   <a href="https://gojotv.vercel.app/home" class="btn violet">go back home</a>
 </section>
+<!-- Inside your HTML file -->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  }
+</script>
+
   <script src="main.js"></script>
 </body>
 </html>
