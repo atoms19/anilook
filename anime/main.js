@@ -23,7 +23,7 @@ if(localStorage.alerted!='1'){
   `)
   localStorage.alerted=1
 }
-
+currpage=elem('.intro')
 //routing functions
 function rhome(){
   currpage.classList.add('hide')
