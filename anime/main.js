@@ -45,7 +45,7 @@ function rerror(){
 }
 
 function rinfo(){
-  
+  rhome()
   elem('#watch-btn').remove()
   w=document.createElement('button')
   w.classList.add('btn')
