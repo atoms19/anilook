@@ -1,22 +1,20 @@
 # gojo
 
-an anime streaming website(pwa)to watch anime online for mobiles
-[visist gojo](https://gojotv.vercel.app)
+an anime streaming website(pwa)to watch anime online. 
+[ visist gojo](https://gojotv.vercel.app)
 
 ## issues
-- no routing
-- cant share a link
-- heavy data usage on continue watching 
 - media player is browsers default
+- no download option
+- no fallback servers
+- sub and dub situated in different versions
+- voice actor and character information not available 
 
 ## upcomming
-- implementation of an in-app router
-- fast and efficient continue watching
 - add to watchlist
 - in app manga reader support
-- service worker to show notifications and offline content loading
 - download anime button
 - character view
 
-next update after april
+not updating till july 2024 unless big issues found 🗿
  
