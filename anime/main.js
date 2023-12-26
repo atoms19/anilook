@@ -130,7 +130,13 @@ function routeHandler(){
 }
 
 addEventListener('popstate',()=>{routeHandler()})
-addEventListener('load',()=>{routeHandler()})
+addEventListener('load',()=>{
+try{
+routeHandler()
+}catch(err){
+alert(err)
+}
+})
 addEventListener('hashchange',()=>{routeHandler()})
 
 
