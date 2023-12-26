@@ -96,12 +96,14 @@ function rintro() {
 
 
 function routeTo(str,callback=()=>{}){
+try{
   const newUrl = str;
   
  
   history.pushState(null,"", newUrl);
   callback()
   routeHandler()
+}catch(err){alert(err)}
 }
 function routeHandler(){
   route=window.location.pathname
