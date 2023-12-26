@@ -21,7 +21,10 @@ if(localStorage.alerted!='1'){
   gogo provider is still working in case u wanna watch some other animes not in anilist 
  
   `)
+localstorage.saves='[]'
+
   localStorage.alerted=1
+
 }
 currpage=elem('.intro')
 //routing functions
