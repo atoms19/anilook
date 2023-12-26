@@ -12,6 +12,10 @@ body.darkmode{
   color:white;
  --colorsec:#D9BDFF;
 }
+.text-read{
+  color:var(--colorsec);
+  font-weight:500;
+}
 body.darkmode .card{
   background:#444;
   color:white;
@@ -221,6 +225,9 @@ display:flex;
   position:absolute;
   top:0;
 
+}
+.anime-tile.manga-tile span{
+  background:rgba(255, 128, 0, 0.79);
 }
 .anime-tile span{
   position:absolute;
