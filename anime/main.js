@@ -210,13 +210,9 @@ function loadSaves(){
 animesChoosen=[]
 animesChoosen=JSON.parse(localStorage.getItem('saves'))||[]
 
-animesChoosen=animesChoosen.filter(
-  (obj, index, self) =>
-    index === self.findIndex((o) => o.animeId=== obj.animeId)
-);
 
 
-if(animesChoosen.length>5){
+if(animesChoosen.length>7){
   console.log('limit reached')
   animesChoosen.pop()
   localStorage.setItem('saves',JSON.stringify(animesChoosen))
