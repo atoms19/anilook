@@ -129,8 +129,9 @@ function routeHandler(){
 //  alert(window.location.pathname)
 }
 
-addEventListener('popstate',routeHandler)
-addEventListener('load',routeHandler)
+addEventListener('popstate',()=>{routeHandler()})
+addEventListener('load',()=>{routeHandler()})
+addEventListener('hashchange',()=>{routeHandler()})
 
 
 //menu function
