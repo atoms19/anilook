@@ -21,7 +21,7 @@ if(localStorage.alerted!='1'){
   gogo provider is still working in case u wanna watch some other animes not in anilist 
  
   `)
-localstorage.saves='[]'
+
 
   localStorage.alerted=1
 
@@ -179,7 +179,7 @@ animesChoosen=[]
 //saving anime
 function addAnime(id,obj){
   animesChoosen.unshift(obj)
-  localStorage.setItem('saves',JSON.stringify(animesChoosen))
+  localStorage.setItem('animesaves',JSON.stringify(animesChoosen))
 }
 
 
@@ -188,7 +188,7 @@ function saveAnime(id,ep){
     if(anime.animeId==id){
       anime.episode=ep
      
-      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+      localStorage.setItem('animesaves',JSON.stringify(animesChoosen))
     }
   }
     
@@ -199,7 +199,7 @@ function saveAnimeTime(id,time){
     if(anime.episode==id){
       anime.time=time
      
-      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+      localStorage.setItem('animesaves',JSON.stringify(animesChoosen))
     }
   }
     
@@ -211,14 +211,14 @@ function loadSaves(){
  
 
 animesChoosen=[]
-animesChoosen=JSON.parse(localStorage.getItem('saves'))||[]
+animesChoosen=JSON.parse(localStorage.getItem('animesaves'))||[]
 
 
 
 if(animesChoosen.length>7){
   console.log('limit reached')
   animesChoosen.pop()
-  localStorage.setItem('saves',JSON.stringify(animesChoosen))
+  localStorage.setItem('animesaves',JSON.stringify(animesChoosen))
 }
 if(animesChoosen.length==0){
   elem('#continue').classList.add('hide')
