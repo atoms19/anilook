@@ -45,7 +45,7 @@ function rerror(){
 }
 
 function rinfo(){
-  elem('.app").classList.remove('hide')
+  elem('.app').classList.remove('hide')
  
   elem('#watch-btn').remove()
   w=document.createElement('button')
