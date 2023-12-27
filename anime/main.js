@@ -45,7 +45,7 @@ function rerror(){
 }
 
 function rinfo(){
- 
+  elem('home').classList.add('hide')
   elem('.app').classList.remove('hide')
 
   elem('#watch-btn').remove()
