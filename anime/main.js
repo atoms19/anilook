@@ -45,7 +45,8 @@ function rerror(){
 }
 
 function rinfo(){
-  elem('#home').classList.add('hide')
+  
+ 
   elem('.app').classList.remove('hide')
 
   elem('#watch-btn').remove()
@@ -291,10 +292,16 @@ function createAnimeCard(anime, location){
 currentEp=0
 //details about anime
 function loadAnimeDetails(id, background=0){
+
+  
   window.scrollTo(0, 0);
   fetch(url+'info/'+id).then((r)=>{
     return r.json()
   }).then(data=>{
+    
+      elem('#ogTitle').content=data.title.english||data.title.romaji
+      elem('#ogDescription').content='gojo tv lets you watch '+elem('#ogTitle').content +' for free ads free and safe'
+    
     //hiding results screen
     elem('#results').classList.add('hide')
     if(!background){
