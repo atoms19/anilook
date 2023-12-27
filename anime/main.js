@@ -45,8 +45,9 @@ function rerror(){
 }
 
 function rinfo(){
-  elem('.app').classList.remove('hide')
  
+  elem('.app').classList.remove('hide')
+
   elem('#watch-btn').remove()
   w=document.createElement('button')
   w.classList.add('btn')
@@ -64,7 +65,8 @@ function rinfo(){
   currpage=elem('#details')
 }
 function rsearch(gen=false) {
-   rhome()
+   elem('.app').classList.remove('hide')
+
     elem('#search-form').classList.remove('hide')
   currpage.classList.add('hide')
     elem('#results').classList.remove('hide')
@@ -220,7 +222,10 @@ function loadSaves(){
 animesChoosen=[]
 animesChoosen=JSON.parse(localStorage.getItem('animesaves'))||[]
 
-
+animesChoosen.filter((obj, index, arr) => {
+  return index==arr.findIndex(item => item.animeID === obj.animeID);
+ 
+});
 
 if(animesChoosen.length>7){
   console.log('limit reached')
@@ -434,9 +439,7 @@ elem('#related').innerHTML=''
  function nextEp(){
    try{
    elem('#watch-episodes').children[currentEp+1].click()
-   animesChoosen[id].ep=currentEp+1
-
-      localStorage.setItem('saves',JSON.stringify(animesChoosen))
+   currentEp+=1
 
    }catch{
      console.log('last episode reached')
