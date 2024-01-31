@@ -1,35 +1,19 @@
-
 //utilities
 function elem(qry){
   return document.querySelector(qry)
 }
 
 if(localStorage.alerted!='1'){
-  alert(`gojotv has been updated again
-  here is the list of new features
   
- ->characters info slightly tweaked
- ->continue watching is now more data efficient 
- ->continue watching now support resuming on exact time you left of 
- ->continue watching now compactble with both providers
- ->continue watching update real time 
- ->gojo tv now functions like a real website and support back navigation
- ->mangas are now highlighted with orange colour
- -> share button to share your favourite animes as links to your friends
- 
- sorry for the inconvenience your earlier saved continue watching will no longer work 💀
-  gogo provider is still working in case u wanna watch some other animes not in anilist 
- 
-  `)
-
-
   localStorage.alerted=1
 
 }
+
 currpage=elem('.intro')
 //routing functions
 function rhome(){
   currpage.classList.add('hide')
+  elem('#details').classList.add('hide')
   loadSaves()
   elem('#search-form').classList.remove('hide')
   elem('.app').classList.remove('hide')
@@ -66,6 +50,7 @@ function rinfo(){
 }
 function rsearch(gen=false) {
    elem('.app').classList.remove('hide')
+elem('#details').classList.add('hide')
 
     elem('#search-form').classList.remove('hide')
   currpage.classList.add('hide')
@@ -224,7 +209,7 @@ animesChoosen=JSON.parse(localStorage.getItem('animesaves'))||[]
 
 animesChoosen.filter((obj, index, arr) => {
   return index==arr.findIndex(item => item.animeID === obj.animeID);
- 
+
 });
 
 if(animesChoosen.length>7){
@@ -310,6 +295,7 @@ function loadAnimeDetails(id, background=0){
 
    //loading anime details into elements 
     elem('#details-img').setAttribute('src',data.image)
+elem('#details-blured-img').setAttribute('src',data.image)
     elem('#details-title').innerText=data.title.english||data.title.romaji||data.title
     if(data.description.length<250){
     elem('#details-info').innerHTML=data.description
@@ -352,23 +338,29 @@ function loadAnimeDetails(id, background=0){
     elem('#watch-episodes').appendChild(ep)
     })
   //watch button loads the first episode by default 
-  epclickEv=elem('#watch-btn').addEventListener('click',()=>{
-currentEp=0
-  addAnime(id,{episode:data.episodes[0].id,name:data.title,image:data.image,animeId:id,time:0})
-routeTo('/watch?ep='+data.episodes[0].id)
+  
 
 
-
-  })
+  
   if(data.type=='MANGA'){
     elem('#watch-btn').innerText='read'
-    elem('#watch-btn').setAttribute('disabled','')
+    //elem('#watch-btn').setAttribute('disabled','')
     elem('#watch-btn').style.background='var(--orange)'
+    elem('#watch-btn').onclick=()=>{
+      window.open('https://mangafire.to/filter?keyword='+data.title.english||data.title.romaji,'_blank');
+      
+    }
 
   }else{
 elem('#watch-btn').innerText='watch'
-elem('#watch-btn').removeAttribute('disabled')
+//elem('#watch-btn').removeAttribute('disabled')
     elem('#watch-btn').style.background='var(--violet)'
+    elem('#watch-btn').onclick = () => {
+      currentEp = 0
+      addAnime(id, { episode: data.episodes[0].id, name: data.title, image: data.image, animeId: id, time: 0 })
+      routeTo('/watch?ep=' + data.episodes[0].id)
+    }
+    
   }
 
   //share btn setup
@@ -566,7 +558,7 @@ elem('#searchbox').addEventListener('keypress',(e)=>{
 })
 
 
-searchpgcount=2
+searchpgcount=1
 //search function
 function searchAnime(aname,pg=1,isGenre=false){
   results='results'
@@ -623,7 +615,7 @@ fetch(url+genreIndicator+aname+genreIndicator2+'page='+pg).then((r)=>{
       if(isGenre){
         searchAnime(aname,searchpgcount,true)
       }else{
-      searchAnime(aname,searchpgcount)
+      searchAnime(aname,searchpgcount+1)
       }
       searchpgcount++
       nextBtn.remove()
@@ -684,6 +676,7 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
   fetch(url+`${home}?page=`+pageno).then((r)=>{
   return r.json()
 }).then((data)=>{
+  setTimeout(()=>{
   data.results.forEach((anime,index)=>{
     createAnimeTile(anime,location,index+1)
     //the code below is disgusting (its for the slides)
@@ -723,7 +716,7 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
 
   }
 
-}  )
+}  )},1)
 
 })
 }
@@ -772,6 +765,7 @@ function tgdarkmode(el){
 
 
 loadHome(2,'#popular-airing',false)
+
 
 //automatically setting darkmode if system in darkmode
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
