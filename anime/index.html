@@ -13,8 +13,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta property="og:title" content="Gojo tv" id="ogTitle">
     <meta property="og:description" content="watch animes for free with no ads and no trackers" id="ogDescription">
-    <meta property="og:image" content="./anilooklogo.png" id="ogImage">
   
+
 
 <link
   rel="stylesheet"
@@ -60,12 +60,16 @@
     </note>
     <note info> add gojo to your phones home screen for a smooth applike experience</note>
     <footer class="center">
-      <hr>
-      built with 💥 by atoms19
+      
+      <div>
+        
+      built by <a class="notlink" href="https://github.com/atoms19">atoms19</a>
+      </div>
     </footer>
   </section>
 
   <!--application-->
+ 
   <section class="app hide anime-fade">
   <nav class='nav violet anime-top'>
     <div class="nav-logo font-2" onclick="routeTo('/home')">gojo</div>
@@ -90,7 +94,7 @@
   <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
 </svg></li>
        <li onclick="routeTo('/home');openMenu()">home</li>
-       <li onclick="alert('under construction,will be ready by aug 2024')">manga</li>
+       <li onclick="alert('under construction,will be ready by aug 2024')">anigame</li>
          <li onclick="localStorage.setItem('animesaves',JSON.stringify([]));alert('data cleared');loadSaves();openMenu()">clear history</li>
 
     </ul>
@@ -168,11 +172,13 @@
 </div>
 </div>
 
-<small class="pack center text-light">
+
+
+<p class="pack text-center font-size-1 text-light">
 
   <br>
-© 2023 all rights reserved gojotv,anilook project
-</small>
+© 2023 all rights reserved gojotv,anilook project by vvd
+</p>
 </section>
 
 
@@ -196,11 +202,18 @@
 </svg>
      </button>
      <div id="details-container"class="flex w-full center">
+       
+       
+       <div id="blur-effect-container">
+         <img id="details-blured-img" src="" class="img" alt="">
      <img id="details-img" src="" class="img" alt="">
+     </div>
+     
+     
     </div>
      <h1 class="font-2" id="details-title"></h1>
      <div class="center" id="watch-opt">
-     <button id="watch-btn" class="btn block violet">watch</button><button id="share-btn" class=" pink opacity btn">share</button>
+     <button id="watch-btn" class="btn block violet">watch</button><button id="share-btn" class=" btn">share</button>
      </div>
      <div class="center">
      <div id="info-container"><p id="details-info"></p></div>
