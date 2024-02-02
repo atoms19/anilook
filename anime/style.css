@@ -8,9 +8,9 @@ body{
   user-select:none;
   --colorsec:#5F3A93;
   --shareBtnPink:#FE7FFF;
-  
+
   -webkit-tap-highlight-color:rgba(157, 98, 255, 0.3);
-  --blurrad:2rem;
+  --blurrad:0rem;
   --defaultpos:rgba(128, 68, 219, 0.79);
 }
 body.darkmode{
@@ -69,7 +69,7 @@ body.darkmode .inp{
   transition:0.32s;
   cursor:pointer;
   max-width:30rem;
-  
+
 }
 .anime-card:active{
  transform:scale(1.1);
@@ -92,7 +92,17 @@ body.darkmode .inp{
   height:auto;
   max-height:30rem;
   width:100%;
+
+}
+.nav{
+ height:2.5rem;
   
+}
+.sidenav{
+  padding-top:2.5rem;
+}
+.wrap{
+  padding-top:4rem !important;
 }
 #watch-episodes{
   display:flex;
@@ -322,7 +332,7 @@ small{
   width:5rem;
   height:6rem;
   border-radius:0.7rem;
- 
+
 }
 .character-name{
   font-size:0.8rem;
@@ -352,12 +362,13 @@ small{
 transform:translateX(-50%);
 }
 #details-blured-img{
-  
-  width:10rem;
-  height:15rem;
+
+  width:10.01rem;
+  height:15.01rem;
 }
 #details-blured-img{
-  filter:blur(var(--blurrad));
+  filter:blur(var(--blurrad)) saturate(180%) brightness(200%);
+  z-index:-5;
 }
 #share-btn{
   background:var(--shareBtnPink);
