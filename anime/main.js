@@ -1,4 +1,5 @@
 //utilities
+
 function elem(qry){
   return document.querySelector(qry)
 }
@@ -13,6 +14,7 @@ currpage=elem('.intro')
 //routing functions
 function rhome(){
   currpage.classList.add('hide')
+  elem('#loader').classList.add('hide')
   elem('#details').classList.add('hide')
   loadSaves()
   elem('#search-form').classList.remove('hide')
@@ -32,25 +34,26 @@ function rinfo(){
  elem('#home').classList.add('hide')
   elem('.app').classList.remove('hide')
 
-  elem('#watch-btn').remove()
-  w=document.createElement('button')
-  w.classList.add('btn')
-  w.classList.add('block')
-  w.classList.add('violet')
-  w.id='watch-btn'
-  w.innerText='watch'
-  elem('#watch-opt').insertBefore(w,elem('#share-btn'))
+  
   currpage.classList.add('hide')
   elem('#search-form').classList.add('hide')
   elem('#details').classList.remove('hide')
   id=new URLSearchParams(location.search).get('id');
   background=new URLSearchParams(location.search).get('background')
-  loadAnimeDetails(id, background)
+  source=new URLSearchParams(location.search).get('source')
+ 
+  elem('#loader').classList.remove('hide')
+  if(source!=undefined){
+  loadAnimeDetails(id,background,source)
+  }else{
+loadAnimeDetails(id,background)
+  }
   currpage=elem('#details')
 }
 function rsearch(gen=false) {
    elem('.app').classList.remove('hide')
 elem('#details').classList.add('hide')
+  elem('#loader').classList.add('hide')
 
     elem('#search-form').classList.remove('hide')
   currpage.classList.add('hide')
@@ -226,7 +229,8 @@ animesChoosen.forEach((anime,index)=>{
   anitile=createAnimeTile({title:anime.name,image:anime.image},"#continue-watching",0,true)
   anitile.addEventListener('click',()=>{
 elem('#loader').classList.remove('hide')
-routeTo('/info?id='+anime.animeId+'&background=1')
+urlinfo=anime.urlType||url
+routeTo('/info?id='+anime.animeId+'&background=1&source='+urlinfo)
 setTimeout(()=>{routeTo(`/watch?ep=${anime.episode}&skip=${anime.time}`)
 },2000)
 
@@ -275,9 +279,9 @@ function createAnimeCard(anime, location){
 }
 currentEp=0
 //details about anime
-function loadAnimeDetails(id, background=0){
+function loadAnimeDetails(id, background=0,source=url){
   window.scrollTo(0, 0);
-  fetch(url+'info/'+id).then((r)=>{
+  fetch(source+'info/'+id).then((r)=>{
     return r.json()
   }).then(data=>{
     //hiding results screen
@@ -328,6 +332,7 @@ elem('#details-blured-img').setAttribute('src',data.image)
     ep.innerText=episode.number
     ep.addEventListener('click',()=>{
       watchAnime(episode.id,qualityOption)
+      currentEp=index
       saveAnime(id,episode.id)
 
 
@@ -357,7 +362,7 @@ elem('#watch-btn').innerText='watch'
     elem('#watch-btn').style.background='var(--violet)'
     elem('#watch-btn').onclick = () => {
       currentEp = 0
-      addAnime(id, { episode: data.episodes[0].id, name: data.title, image: data.image, animeId: id, time: 0 })
+      addAnime(id, { episode: data.episodes[0].id, name: data.title, image: data.image, animeId: id, time: 0,urlType:url})
       routeTo('/watch?ep=' + data.episodes[0].id)
     }
     
@@ -394,7 +399,7 @@ alert('share link copied to clipboard')
   }
 
 
-  if(url==murl){
+  if(source==murl){
   elem('#recommendations').innerHTML=''
   data.recommendations.forEach(r=>{
 
