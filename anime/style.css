@@ -8,7 +8,6 @@ body{
   user-select:none;
   --colorsec:#5F3A93;
   --shareBtnPink:#FE7FFF;
-
   -webkit-tap-highlight-color:rgba(157, 98, 255, 0.3);
   --blurrad:0rem;
   --defaultpos:rgba(128, 68, 219, 0.79);
@@ -20,6 +19,7 @@ body.darkmode{
  --colorsec:#D9BDFF;
  --shareBtnPink:#C46CC5;
  --blurrad:7rem;
+ --light:#423F45;
 }
 .text-read{
   color:var(--colorsec);
@@ -39,6 +39,7 @@ body.darkmode .inp{
   color:white;
 
 }
+
 .block{
   max-width:20rem;
 }
@@ -161,7 +162,7 @@ display:flex;
   display:flex;
   align-items:center;
   justify-content: center;
-  overflow-y:scroll;
+  overflow-y:hidden;
 }
 
 .swiper {
@@ -334,6 +335,7 @@ small{
   border-radius:0.7rem;
 
 }
+
 .character-name{
   font-size:0.8rem;
   font-weight:500;
@@ -372,4 +374,30 @@ transform:translateX(-50%);
 }
 #share-btn{
   background:var(--shareBtnPink);
+}
+#ambient{
+  position:relative;
+  display:block;
+}
+#screen-blur{
+  position:absolute;
+  z-index:-20;
+  background: #3D47AE;
+  transform:scale(1.2);
+  display:none;
+}
+
+::-webkit-scrollbar {
+  width:0.5rem;
+}
+::-webkit-scrollbar-track {
+  background:#FFFFFF00;
+  border-radius:0.5rem;
+}
+::-webkit-scrollbar-thumb {
+  background:var(--colorsec);
+  border-radius:0.5rem;
+}
+.hide{
+  display:none!important;
 }
