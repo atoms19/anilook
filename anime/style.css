@@ -11,6 +11,7 @@ body{
   -webkit-tap-highlight-color:rgba(157, 98, 255, 0.3);
   --blurrad:0rem;
   --defaultpos:rgba(128, 68, 219, 0.79);
+  --scrollcolor:#ccc;
 }
 body.darkmode{
   background:var(--dark);
@@ -20,6 +21,7 @@ body.darkmode{
  --shareBtnPink:#C46CC5;
  --blurrad:7rem;
  --light:#423F45;
+  --scrollcolor:#444;
 }
 .text-read{
   color:var(--colorsec);
@@ -391,12 +393,12 @@ transform:translateX(-50%);
   width:0.5rem;
 }
 ::-webkit-scrollbar-track {
-  background:#FFFFFF00;
-  border-radius:0.5rem;
+  background:var(--scrollcolor);
+  border-radius:0rem;
 }
 ::-webkit-scrollbar-thumb {
-  background:var(--colorsec);
-  border-radius:0.5rem;
+  background:var(--violet);
+  border-radius:0.1rem;
 }
 .hide{
   display:none!important;
