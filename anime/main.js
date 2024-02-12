@@ -23,7 +23,7 @@ function rhome(){
   currpage=elem('#home')
 }
 function rerror(){
-
+  
   currpage.classList.add('hide')
   elem('#loader').classList.add('hide')
   elem('#error').classList.remove('hide')
@@ -102,10 +102,15 @@ function routeTo(str,callback=()=>{}){
 
   const newUrl = str;
 
-
+if(str!=='/error'){
   history.pushState(null,"", newUrl);
   callback()
   routeHandler()
+}else{
+  history.replaceState(null, '', '/error');
+  callback()
+  routeHandler()
+}
 
 }
 
@@ -163,12 +168,13 @@ let burl='https://anigojoapi.vercel.app/anime/gogoanime/'
 let murl= "https://anigojoapi.vercel.app/meta/anilist/"
 
 let old = new URLSearchParams(location.search).get('old');
-//old=true
+
 if(old){
   url=burl
 }else{
   url=murl
 }
+
 
 qualityOption=0
 
@@ -412,6 +418,7 @@ elem('#related').innerHTML=''
 
     createAnimeTile(r,'#related',0)
   })
+ 
   enddate=data.startDate.year+'--now'
   if(data.status!='Ongoing'){
     enddate=data.startDate.year+'--'+data.endDate.day+'/'+data.endDate.month+'/'+data.endDate.year
@@ -419,6 +426,26 @@ elem('#related').innerHTML=''
   elem('#details-release').innerText=data.startDate.day+'/'+data.startDate.month+'/'+enddate
   loadCharacters(data.characters)
   }
+  
+    if(data.relations==undefined || data.relations.length==0){
+      
+    elem('#relate').classList.add('hide')
+      
+    }else{
+      elem('#relate').classList.remove('hide')
+      
+  }
+  if(data.recommendations==undefined||data.relations.length==0){
+    elem('#recommend').classList.add('hide')
+  }else{
+elem('#recommend').classList.remove('hide')
+  }
+  if(data.characters==undefined || data.characters.length==0){
+    elem('#xray-box').classList.add('hide')
+  }else{
+    elem('#xray-box').classList.remove('hide')
+  }
+  
   if(!background){
   elem('#loader').classList.add('hide')
   }//loading finished
@@ -428,7 +455,8 @@ elem('#related').innerHTML=''
 
   }).catch(err=>{
 
-    routeTo('/error')
+  routeTo('/error')
+   
    // elem('#loader').classList.add('hide') 
   })
 }
@@ -504,6 +532,8 @@ function watchAnime(id,srcno=0){
         elem("#watch-screen").addEventListener('loadstart', () => {
           elem('#loader').classList.add('hide')
         })
+       
+        
   //watch timer setup
   elem('#watch-screen').onpause=(e)=>{
     saveAnimeTime(id,e.target.currentTime)
@@ -541,6 +571,12 @@ function watchAnime(id,srcno=0){
   })
 
 }
+//ambient mode setup
+function ambient(){
+  //not done yet
+}
+
+
 
 //search box functionality
 
