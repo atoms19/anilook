@@ -398,7 +398,10 @@ transform:translateX(-50%);
 }
 ::-webkit-scrollbar-thumb {
   background:var(--violet);
-  border-radius:0.1rem;
+  border-radius:0rem;
+}
+::-webkit-scrollbar-thumb:hover{
+  opacity:0.8;
 }
 .hide{
   display:none!important;
