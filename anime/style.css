@@ -99,7 +99,7 @@ body.darkmode .inp{
 }
 .nav{
  height:2.5rem;
-  
+
 }
 .sidenav{
   padding-top:2.5rem;
@@ -397,7 +397,7 @@ transform:translateX(-50%);
   border-radius:0rem;
 }
 ::-webkit-scrollbar-thumb {
-  background:var(--violet);
+  background:var(--night);
   border-radius:0rem;
 }
 ::-webkit-scrollbar-thumb:hover{
@@ -405,4 +405,8 @@ transform:translateX(-50%);
 }
 .hide{
   display:none!important;
+}
+.list li{
+    border-bottom:1px solid var(--scrollcolor);
+  
 }
