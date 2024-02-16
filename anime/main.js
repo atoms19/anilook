@@ -31,6 +31,7 @@ function rerror(){
 }
 
 function rinfo(){
+  
  elem('#home').classList.add('hide')
   elem('.app').classList.remove('hide')
 
@@ -49,6 +50,7 @@ function rinfo(){
 loadAnimeDetails(id,background)
   }
   currpage=elem('#details')
+  
 }
 function rsearch(gen=false) {
    elem('.app').classList.remove('hide')
@@ -175,6 +177,31 @@ if(old){
   url=murl
 }
 
+if(url==burl){
+ elem('#genres').innerHTML=`  <div class="genre-tile shadow rose rounded" onclick="loadGenre('romance')">romance</div>
+    <div class="genre-tile shadow steel rounded" onclick="loadGenre('action')">action</div>
+         <div class="genre-tile shadow salmon rounded" onclick="loadGenre('shounen')">shounen<small>full action</small></div>
+ <div class="genre-tile shadow blue rounded" onclick="loadGenre('fantasy')">fantasy</div>
+      <div class="genre-tile shadow amber rounded" onclick="loadGenre('slice-of-life')">wholesome</div>
+  <div class="genre-tile shadow apple rounded" onclick="loadGenre('ecchi')">ecchi<small><br>sus cam angles</small></div>
+   <div class="genre-tile shadow pink rounded" onclick="loadGenre('shoujo')">shoujo
+   <small>lovey dovey bfs</small></div>
+    <div class="genre-tile shadow purple rounded" onclick="loadGenre('harem')">harem<br><small>lots of girls</small></div>
+
+     <div class="genre-tile shadow indigo rounded" onclick="loadGenre('sports')">sports</div>
+          <div class="genre-tile shadow blue rounded" onclick="loadGenre('mecha')">mecha<small>robots</small></div>
+               <div class="genre-tile shadow wood rounded" onclick="loadGenre('mystery')">mystery</div>
+                    <div class="genre-tile shadow dark rounded" onclick="loadGenre('horror')">horror</div>
+
+                          <div class="genre-tile shadow maroon rounded" onclick="loadGenre('historical')">historical</div>
+                           <div class="genre-tile shadow grey rounded" onclick="loadGenre('seinen')">seinen<small>4mature men</small></div>
+                     <div class="genre-tile shadow light  rounded" onclick="loadGenre('josei')">josei<small>4mature women</small></div>  
+                      <div class="genre-tile shadow teal  rounded" onclick="loadGenre('school')">school</div>
+                           <div class="genre-tile shadow olive rounded" onclick="loadGenre('isekai')">isekai<small>another world</small></div>`
+}
+
+
+
 
 qualityOption=0
 
@@ -237,6 +264,7 @@ animesChoosen.forEach((anime,index)=>{
 elem('#loader').classList.remove('hide')
 urlinfo=anime.urlType||url
 routeTo('/info?id='+anime.animeId+'&background=1&source='+urlinfo)
+
 setTimeout(()=>{routeTo(`/watch?ep=${anime.episode}&skip=${anime.time}`)
 },2000)
 
@@ -283,7 +311,7 @@ function createAnimeCard(anime, location){
 
      })
 }
-currentEp=0
+currentEp=1
 //details about anime
 function loadAnimeDetails(id, background=0,source=url){
   window.scrollTo(0, 0);
@@ -330,17 +358,22 @@ elem('#details-blured-img').setAttribute('src',data.image)
     elem('#watch-episodes').innerHTML=''
 
     //loading episodes as buttons
+    epBtnChosen=undefined
     data.episodes.forEach((episode,index)=>{
     ep=document.createElement('button')
     ep.classList.add('btn')
     ep.classList.add('violet')
     ep.classList.add('opacity')
     ep.innerText=episode.number
-    ep.addEventListener('click',()=>{
+    ep.addEventListener('click',(e)=>{
       watchAnime(episode.id,qualityOption)
-      currentEp=index
+      currentEp=index+1
       saveAnime(id,episode.id)
-
+      e.target.classList.remove('opacity')
+      if(epBtnChosen!=undefined){
+        epBtnChosen.classList.add('opacity')
+      }
+      epBtnChosen=e.target
 
       //changing current episode 
 
@@ -367,9 +400,16 @@ elem('#watch-btn').innerText='watch'
 //elem('#watch-btn').removeAttribute('disabled')
     elem('#watch-btn').style.background='var(--violet)'
     elem('#watch-btn').onclick = () => {
-      currentEp = 0
+      currentEp = 1 
       addAnime(id, { episode: data.episodes[0].id, name: data.title, image: data.image, animeId: id, time: 0,urlType:url})
+      
+      //highlighting the first episode 
+       elem('#watch-episodes').children[0].classList.remove('opacity')
+       epBtnChosen=elem('#watch-episodes').children[0]
+       
+       
       routeTo('/watch?ep=' + data.episodes[0].id)
+      
     }
     
   }
@@ -463,9 +503,9 @@ elem('#recommend').classList.remove('hide')
 //function to load next episode uses currentEp variable to keep track 
  function nextEp(){
    try{
-   elem('#watch-episodes').children[currentEp+1].click()
-   currentEp+=1
-
+     
+   elem('#watch-episodes').children[currentEp].click()
+  
    }catch{
      console.log('last episode reached')
    }
@@ -537,8 +577,7 @@ function watchAnime(id,srcno=0){
   //watch timer setup
   elem('#watch-screen').onpause=(e)=>{
     saveAnimeTime(id,e.target.currentTime)
-    console.log(e.target.currentTime)
-    console.log(localStorage.saves)
+   //saves anime time when paused
   }
 
 
@@ -667,8 +706,10 @@ fetch(url+genreIndicator+aname+genreIndicator2+'page='+pg).then((r)=>{
 }
 
 function loadGenre(t){
-  searchAnime(t,1,true)
+  
+  
   routeTo('/genre?q='+t)
+  
 }
 
 
@@ -707,7 +748,7 @@ function createAnimeTile(anime,location, position,notdefault=false)
 
 //我必须吃屎才能做到这一点
 
-function loadHome(pageno=1, location='#top-airing',slides=true){
+function loadHome(pageno=1, location='#top-airing',slides=true,ranking=1){
 
   if(url==burl){
     home='top-airing'
@@ -719,7 +760,11 @@ function loadHome(pageno=1, location='#top-airing',slides=true){
 }).then((data)=>{
   setTimeout(()=>{
   data.results.forEach((anime,index)=>{
+    if(ranking){
     createAnimeTile(anime,location,index+1)
+    }else{
+createAnimeTile(anime,location,0)
+    }
     //the code below is disgusting (its for the slides)
     if(slides){
     swh=document.createElement('div')
@@ -805,8 +850,8 @@ function tgdarkmode(el){
 
 
 
-loadHome(2,'#popular-airing',false)
-
+loadHome(2,'#popular-airing',false,0)
+loadHome(3,'#mores',false,0)
 
 //automatically setting darkmode if system in darkmode
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
