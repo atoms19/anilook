@@ -58,6 +58,7 @@ elem('#details').classList.add('hide')
   elem('#loader').classList.add('hide')
 
     elem('#search-form').classList.remove('hide')
+elem('#home').classList.add('hide')
   currpage.classList.add('hide')
     elem('#results').classList.remove('hide')
     q=new URLSearchParams(location.search).get('q');
