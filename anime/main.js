@@ -167,8 +167,8 @@ fetch('https://animechan.xyz/api/random')
 //anime providers 
 
 
-let burl='https://anigojoapi.vercel.app/anime/gogoanime/'
-let murl= "https://anigojoapi.vercel.app/meta/anilist/"
+let burl='https://anilook-api.vercel.app/anime/gogoanime/'
+let murl= "https://anilook-api.vercel.app/meta/anilist/"
 
 let old = new URLSearchParams(location.search).get('old');
 
