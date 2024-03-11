@@ -12,7 +12,9 @@ body{
   --blurrad:0rem;
   --defaultpos:rgba(128, 68, 219, 0.79);
   --scrollcolor:#ccc;
+  
 }
+
 body.darkmode{
   background:var(--dark);
   --violet:#6E39CB;
@@ -99,10 +101,16 @@ body.darkmode .inp{
 }
 .nav{
  height:2.5rem;
+ opacity:0.95;
 
 }
 .sidenav{
   padding-top:2.5rem;
+  opacity:0;
+  transition:opacity 0.5s,height 0.3s;
+}
+.sidenav.active{
+  opacity:1;
 }
 .wrap{
   padding-top:4rem !important;
@@ -363,8 +371,10 @@ small{
   position:absolute;
   top:0;
   left:50%;
-transform:translateX(-50%);
+transform:translateX(-190%);
 }
+
+
 #details-blured-img{
 
   width:10.01rem;
@@ -409,4 +419,9 @@ transform:translateX(-50%);
 .list li{
     border-bottom:1px solid var(--scrollcolor);
   
+}
+@media (max-width:680px){
+#details-blured-img,#details-img{
+  transform:translateX(-50%);
+}
 }
