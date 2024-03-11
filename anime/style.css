@@ -366,12 +366,15 @@ small{
   width:11rem;
   height:16rem;
   position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+ 
 }
 #details-blured-img,#details-img{
   position:absolute;
-  top:0;
-  left:50%;
-transform:translateX(-190%);
+
+
 }
 
 
@@ -420,8 +423,15 @@ transform:translateX(-190%);
     border-bottom:1px solid var(--scrollcolor);
   
 }
+.flex-grid{
+  display:flex;
+}
+.flex-grid-14{
+  flex-basis:20rem;
+}
+
 @media (max-width:680px){
-#details-blured-img,#details-img{
-  transform:translateX(-50%);
+.flex-grid{
+  display:block;
 }
 }
