@@ -5,7 +5,7 @@ function elem(qry){
 }
 
 if(localStorage.alerted!='1'){
-  
+
   localStorage.alerted=1
 
 }
@@ -23,26 +23,32 @@ function rhome(){
   currpage=elem('#home')
 }
 function rerror(){
-  
+
   currpage.classList.add('hide')
   elem('#loader').classList.add('hide')
   elem('#error').classList.remove('hide')
   currpage=elem('#error')
 }
+function rmanga(){
+  currpage.classList.add('hide')
+  elem('#loader').classList.add('hide')
+  elem('#manga').classList.remove('hide')
+  currpage=elem('#manga')
+}
 
 function rinfo(){
-  
+
  elem('#home').classList.add('hide')
   elem('.app').classList.remove('hide')
 
-  
+
   currpage.classList.add('hide')
   elem('#search-form').classList.add('hide')
   elem('#details').classList.remove('hide')
   id=new URLSearchParams(location.search).get('id');
   background=new URLSearchParams(location.search).get('background')
   source=new URLSearchParams(location.search).get('source')
- 
+
   elem('#loader').classList.remove('hide')
   if(source!=undefined){
   loadAnimeDetails(id,background,source)
@@ -50,7 +56,7 @@ function rinfo(){
 loadAnimeDetails(id,background)
   }
   currpage=elem('#details')
-  
+
 }
 function rsearch(gen=false) {
    elem('.app').classList.remove('hide')
@@ -139,7 +145,10 @@ function routeHandler(){
     rwatch()
   }else if(route=='/error'){
     rerror()
-  }else{
+  }else if(route=='/manga'){
+    rmanga()
+  }
+  else{
     rnot()
   }
 //  alert(window.location.pathname)
@@ -167,39 +176,10 @@ fetch('https://animechan.xyz/api/random')
 //anime providers 
 
 
-let burl='https://anilook-api.vercel.app/anime/gogoanime/'
-let murl= "https://anilook-api.vercel.app/meta/anilist/"
 
-let old = new URLSearchParams(location.search).get('old');
+let url='https://anilook-api.vercel.app/meta/anilist/'
 
-if(old){
-  url=burl
-}else{
-  url=murl
-}
 
-if(url==burl){
- elem('#genres').innerHTML=`  <div class="genre-tile shadow rose rounded" onclick="loadGenre('romance')">romance</div>
-    <div class="genre-tile shadow steel rounded" onclick="loadGenre('action')">action</div>
-         <div class="genre-tile shadow salmon rounded" onclick="loadGenre('shounen')">shounen<small>full action</small></div>
- <div class="genre-tile shadow blue rounded" onclick="loadGenre('fantasy')">fantasy</div>
-      <div class="genre-tile shadow amber rounded" onclick="loadGenre('slice-of-life')">wholesome</div>
-  <div class="genre-tile shadow apple rounded" onclick="loadGenre('ecchi')">ecchi<small><br>sus cam angles</small></div>
-   <div class="genre-tile shadow pink rounded" onclick="loadGenre('shoujo')">shoujo
-   <small>lovey dovey bfs</small></div>
-    <div class="genre-tile shadow purple rounded" onclick="loadGenre('harem')">harem<br><small>lots of girls</small></div>
-
-     <div class="genre-tile shadow indigo rounded" onclick="loadGenre('sports')">sports</div>
-          <div class="genre-tile shadow blue rounded" onclick="loadGenre('mecha')">mecha<small>robots</small></div>
-               <div class="genre-tile shadow wood rounded" onclick="loadGenre('mystery')">mystery</div>
-                    <div class="genre-tile shadow dark rounded" onclick="loadGenre('horror')">horror</div>
-
-                          <div class="genre-tile shadow maroon rounded" onclick="loadGenre('historical')">historical</div>
-                           <div class="genre-tile shadow grey rounded" onclick="loadGenre('seinen')">seinen<small>4mature men</small></div>
-                     <div class="genre-tile shadow light  rounded" onclick="loadGenre('josei')">josei<small>4mature women</small></div>  
-                      <div class="genre-tile shadow teal  rounded" onclick="loadGenre('school')">school</div>
-                           <div class="genre-tile shadow olive rounded" onclick="loadGenre('isekai')">isekai<small>another world</small></div>`
-}
 
 
 
@@ -383,17 +363,19 @@ elem('#details-blured-img').setAttribute('src',data.image)
     elem('#watch-episodes').appendChild(ep)
     })
   //watch button loads the first episode by default 
-  
 
 
-  
+
+
   if(data.type=='MANGA'){
     elem('#watch-btn').innerText='read'
     //elem('#watch-btn').setAttribute('disabled','')
     elem('#watch-btn').style.background='var(--orange)'
     elem('#watch-btn').onclick=()=>{
-      window.open('https://mangafire.to/filter?keyword='+data.title.english||data.title.romaji,'_blank');
-      
+      //window.open('https://mangafire.to/filter?keyword='+data.title.english||data.title.romaji,'_blank');
+      routeTo('/manga?')
+      console.log(data)
+
     }
 
   }else{
@@ -403,16 +385,16 @@ elem('#watch-btn').innerText='watch'
     elem('#watch-btn').onclick = () => {
       currentEp = 1 
       addAnime(id, { episode: data.episodes[0].id, name: data.title, image: data.image, animeId: id, time: 0,urlType:url})
-      
+
       //highlighting the first episode 
        elem('#watch-episodes').children[0].classList.remove('opacity')
        epBtnChosen=elem('#watch-episodes').children[0]
-       
-       
+
+
       routeTo('/watch?ep=' + data.episodes[0].id)
-      
+
     }
-    
+
   }
 
   //share btn setup
@@ -446,7 +428,7 @@ alert('share link copied to clipboard')
   }
 
 
-  if(source==murl){
+  
   elem('#recommendations').innerHTML=''
   data.recommendations.forEach(r=>{
 
@@ -459,22 +441,22 @@ elem('#related').innerHTML=''
 
     createAnimeTile(r,'#related',0)
   })
- 
+
   enddate=data.startDate.year+'--now'
   if(data.status!='Ongoing'){
     enddate=data.startDate.year+'--'+data.endDate.day+'/'+data.endDate.month+'/'+data.endDate.year
   }
   elem('#details-release').innerText=data.startDate.day+'/'+data.startDate.month+'/'+enddate
   loadCharacters(data.characters)
-  }
   
+
     if(data.relations==undefined || data.relations.length==0){
-      
+
     elem('#relate').classList.add('hide')
-      
+
     }else{
       elem('#relate').classList.remove('hide')
-      
+
   }
   if(data.recommendations==undefined||data.relations.length==0){
     elem('#recommend').classList.add('hide')
@@ -486,7 +468,7 @@ elem('#recommend').classList.remove('hide')
   }else{
     elem('#xray-box').classList.remove('hide')
   }
-  
+
   if(!background){
   elem('#loader').classList.add('hide')
   }//loading finished
@@ -497,16 +479,16 @@ elem('#recommend').classList.remove('hide')
   }).catch(err=>{
 
   routeTo('/error')
-   
+
    // elem('#loader').classList.add('hide') 
   })
 }
 //function to load next episode uses currentEp variable to keep track 
  function nextEp(){
    try{
-     
+
    elem('#watch-episodes').children[currentEp].click()
-  
+
    }catch{
      console.log('last episode reached')
    }
@@ -573,8 +555,8 @@ function watchAnime(id,srcno=0){
         elem("#watch-screen").addEventListener('loadstart', () => {
           elem('#loader').classList.add('hide')
         })
-       
-        
+
+
   //watch timer setup
   elem('#watch-screen').onpause=(e)=>{
     saveAnimeTime(id,e.target.currentTime)
@@ -658,14 +640,9 @@ elem('#results-container').innerHTML=`  <button class="btn violet" onclick="rout
 genreIndicator=''
 genreIndicator2='?'
 if(isGenre){
-  if(url==burl){
-  genreIndicator='genre/'
-  console.log('still old')
-  }else{
     genreIndicator='genre?genres=["'
     aname=aname.charAt(0).toUpperCase()+aname.slice(1)
     genreIndicator2='"]&'
-  }
 }
 
 fetch(url+genreIndicator+aname+genreIndicator2+'page='+pg).then((r)=>{
@@ -707,10 +684,10 @@ fetch(url+genreIndicator+aname+genreIndicator2+'page='+pg).then((r)=>{
 }
 
 function loadGenre(t){
-  
-  
+
+
   routeTo('/genre?q='+t)
-  
+
 }
 
 
@@ -751,18 +728,14 @@ function createAnimeTile(anime,location, position,notdefault=false)
 
 function loadHome(pageno=1, location='#top-airing',slides=true,ranking=1){
 
-  if(url==burl){
-    home='top-airing'
-  }else{
-    home='trending'
-  }
-  fetch(url+`${home}?page=`+pageno).then((r)=>{
+  
+  fetch(url+`trending?page=`+pageno).then((r)=>{
   return r.json()
 }).then((data)=>{
   setTimeout(()=>{
   data.results.forEach((anime,index)=>{
     if(ranking){
-    createAnimeTile(anime,location,index+1)
+          createAnimeTile(anime,location,index+1)
     }else{
 createAnimeTile(anime,location,0)
     }
@@ -808,15 +781,13 @@ createAnimeTile(anime,location,0)
 })
 }
 function loadPopular(){
-  if(url==murl){
+  
     fetch(url+'popular').then(dat=>{return dat.json()}).then(r=>{
       r.results.forEach((anime)=>{
         createAnimeTile(anime,'#goated',0)
       })
     })
-  }else{
-    elem('#popular').classList.add('hide')
-  }
+  
 }
 loadPopular()
 
@@ -833,7 +804,7 @@ function tgdarkmode(el){
   if(el){
     el.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon-stars-fill" viewBox="0 0 16 16">
   <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-  <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.0  <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
 </svg>`}
   }else{
  elem('body').classList.remove('darkmode')
