@@ -88,7 +88,7 @@ body.darkmode .inp{
   width:inherit;
   font-size:0.98rem;
   word-wrap:balance;
-  width:90%;
+ width: 90%;
 }
 .flex-btw{
   justify-content: space-between;
@@ -161,12 +161,7 @@ body.darkmode .inp{
   width:20rem;
   height:25rem;
 }
-#details-container{
 
-display:flex;
-  align-items:center;
-  justify-content: center;
-}
 #info-container{
  width:90%;
   display:flex;
@@ -177,7 +172,7 @@ display:flex;
 
 .swiper {
   width: 100%;
-  height:17rem;
+  height:40vh;
 
 }
 .swiper-slide{
@@ -192,15 +187,18 @@ display:flex;
   background-repeat:no-repeat!important;
   position:relative;
 
+
 }
 .swiper-pagination *{
   background:var(--violet);
+  
 }
 .slide h1{
   position:relative;
   font-family:"Montserrat",sans-serif;
   color:#fff;
   margin-bottom:1rem;
+  
 
 }
 .slide-container{
@@ -221,7 +219,7 @@ display:flex;
 
 .anime-tile-container,.genre-tile-container{
   height:14rem;
-  width:90vw;
+  max-width:90vw;
   overflow-x:scroll !important;
   padding:0.2rem 0;
   overflow:auto;
@@ -279,9 +277,7 @@ background: rgba(128, 68, 219, 0.79);
 .wrap-min{
   padding-top:1.5rem;
 }
-#details-container{
-  min-width:90vw;
-}
+
 #details-img,#details-blured-img{
   width:10rem;
   height:15rem;
@@ -297,7 +293,9 @@ background: rgba(128, 68, 219, 0.79);
 }
 #info-list{
   word-break:break-all;
-  width:90vw;
+  word-wrap: break-word;
+  width:100%;
+  
 }
 #info-list span{
   color:var(--colorsec)!important;
@@ -359,7 +357,6 @@ small{
   text-align:center;
 }
 .notlink{
-
   display:inline;
 }
 #blur-effect-container{
@@ -425,13 +422,43 @@ small{
 }
 .flex-grid{
   display:flex;
+  
+  
 }
-.flex-grid-14{
-  flex-basis:40%;
+.flex-half  {
+  width: 48vw;
+ 
+
+}
+.relate .anime-tile-container,.recommend .anime-tile-container{
+  width: 10vw !important;
+}
+.manga-img{
+  max-height: 100vh;
+  width: auto;
+  max-width:95vw;
+  object-fit: contain;
 }
 
-@media (max-width:680px){
+.manga-select{
+  padding: 0.25rem 0.5rem;
+  color:#444;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  background-color: rgba(255,255,255,0.7);
+  border-radius: 4px;
+  max-width:10rem;
+  margin-right: 1rem;
+
+}
+
+@media (max-width:760px){
 .flex-grid{
   display:block;
 }
+.flex-half{
+  width: 90vw;
+}
+
 }

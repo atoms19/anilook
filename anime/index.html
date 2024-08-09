@@ -199,32 +199,33 @@
 
    <!--details about an anime-->
    <section id="details" class="hide pack wrap flex-grid">
-<div class="flex-grid-14">
+<div class="flex-half">
      <button id="details-back" class="violet btn">
        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg>
      </button>
-     <div id="details-container"class="flex w-full center">
-       
-       <div class="center">
+      
+  <div class="center">
        <div id="blur-effect-container">
          <img id="details-blured-img" src="" class="img" alt="">
-     <img id="details-img" src="" class="img" alt="">
-     </div>
-     </div>
+         <img id="details-img" src="" class="img" alt="">
+      </div>
+  
      
     </div>
      <h1 class="font-2" id="details-title"></h1>
   
      <div class="center" id="watch-opt">
-     <button id="watch-btn" class="btn block violet">watch</button><button id="share-btn" class=" btn">share</button>
+     <button id="watch-btn" class="btn block violet">watch</button>
+     <button id="share-btn" class=" btn">share</button>
      </div>
-     <div id="info-container"><p id="details-info"></p></div>
+     <div id="info-container">
+      <p id="details-info"></p>
+    </div>
  </div>
- <div class="flex-grid-34">
-     <div class="center">
-     
+ <div class="flex-half">
+    
 
      <ul class="list shadow" id="info-list">
        <li>
@@ -275,7 +276,7 @@
      </div>
 
 
-     </div></div>
+     </div>
      </div>
 </div>
    </section>
@@ -341,6 +342,29 @@
   <p class="text-grey text-center">sorry we couldn't find the section you are looking for in our site</p>
   <a href="https://gojotv.vercel.app/home" class="btn violet">go back home</a>
 </section>
+
+
+<section id="manga" class="hide anime-fade pack wrap">
+<nav class="nav orange">
+<div class="nav-logo">gojomanga</div>
+<div class="">
+<select id='chapter-list' class="manga-select">
+    
+</select>
+</div>
+</nav>
+ 
+  <div id="manga-screen" class="center">
+
+  </div>
+  <div class="flex flex-btw">
+  <button id="prevChapBtn" class="btn orange block">prev chapter</button>
+  <button id="nextChapBtn" class="btn orange block">next chapter</button>
+    </div>
+</section>
+
+
+
   <script src="main.js"></script>
 </body>
 </html>
