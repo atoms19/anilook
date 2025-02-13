@@ -185,8 +185,8 @@ fetch('https://animechan.xyz/api/random')
 
 
 
-let url='https://anigojoapi.vercel.app/meta/anilist/'
-let mangaUrl='https://anigojoapi.vercel.app/meta/anilist-manga/'
+let url='https://anilook-api.vercel.app/meta/anilist/'
+let mangaUrl='https://anilook-api.vercel.app/meta/anilist-manga/'
 
 
 
